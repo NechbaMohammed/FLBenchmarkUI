@@ -108,11 +108,18 @@
       max-width: 100%;
       overflow-x: auto;
       margin: 20px auto;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      border-radius: 10px;
       background: #fff;
-      padding: 10px;
+      padding: 15px;
+      transition: all 0.3s ease;
     }
+    
+    .table-container:hover {
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      transform: translateY(-5px);
+    }
+    
     .table {
       border-collapse: separate;
       border-spacing: 0;
@@ -120,48 +127,81 @@
       margin-bottom: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
+    
     .table.is-bordered {
       border: none;
     }
+    
     .table th, .table td {
       border: none;
       padding: 15px;
       vertical-align: middle;
       position: relative;
     }
+    
     .table th {
       background-color: #2c3e50;
-      color: #ffffff;
+      color: #ffff00;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
       font-size: 16px;
       text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
+    
+    .table th:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: #ffff00;
+      transition: width 0.3s ease;
+    }
+    
+    .table th:hover:after {
+      width: 100%;
+    }
+    
     .table th:first-child {
       border-top-left-radius: 8px;
     }
+    
     .table th:last-child {
       border-top-right-radius: 8px;
     }
+    
     .table tbody tr:last-child td:first-child {
       border-bottom-left-radius: 8px;
     }
+    
     .table tbody tr:last-child td:last-child {
       border-bottom-right-radius: 8px;
     }
+    
     .table tbody tr {
       transition: all 0.3s;
+      border-left: 3px solid transparent;
     }
+    
     .table tbody tr:nth-child(odd) {
       background-color: #f8f9fe;
     }
+    
     .table tbody tr:nth-child(even) {
       background-color: #ffffff;
     }
+    
     .table.is-hoverable tbody tr:hover {
       background-color: #eef1ff;
+      border-left: 3px solid #2980b9;
+      transform: translateX(5px);
     }
+    
     .table a {
       color: #2980b9;
       text-decoration: none;
@@ -171,23 +211,51 @@
       background-color: #e8f4fc;
       transition: all 0.3s;
       display: inline-block;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
     }
+    
+    .table a:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: #2980b9;
+      transition: all 0.3s ease;
+      z-index: -1;
+    }
+    
     .table a:hover {
-      background-color: #2980b9;
       color: white;
     }
+    
+    .table a:hover:before {
+      left: 0;
+    }
+    
     .label-skew {
       color: #2c3e50;
       font-weight: 600;
+      position: relative;
+      transition: all 0.3s ease;
     }
+    
     .feature-skew {
       color: #2c3e50;
       font-weight: 600;
+      position: relative;
+      transition: all 0.3s ease;
     }
+    
     .dataset-cell {
       color: #34495e;
       font-weight: 600;
+      transition: all 0.3s ease;
     }
+    
     .math-formula {
       background-color: #f1f5f9;
       padding: 5px 10px;
@@ -195,7 +263,16 @@
       display: inline-block;
       color: #34495e;
       font-family: 'Courier New', monospace;
+      transition: all 0.3s ease;
+      border-left: 2px solid transparent;
     }
+    
+    .math-formula:hover {
+      background-color: #e3eaf3;
+      transform: translateX(5px);
+      border-left: 2px solid #2980b9;
+    }
+    
     .section-header {
       background-color: #ecf0f1 !important;
       color: #2c3e50 !important;
@@ -203,9 +280,38 @@
       font-weight: bold;
       letter-spacing: 1px;
       padding: 15px !important;
+      position: relative;
+      overflow: hidden;
     }
+    
+    .section-header:before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-image: linear-gradient(to right, transparent, #2980b9, transparent);
+    }
+    
     .view-button {
       text-align: center;
+    }
+    
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(41, 128, 185, 0.4);
+      }
+      70% {
+        box-shadow: 0 0 0 10px rgba(41, 128, 185, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(41, 128, 185, 0);
+      }
+    }
+    
+    .pulse {
+      animation: pulse 2s infinite;
     }
 </style>
 
@@ -291,7 +397,7 @@
                       <span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span><br>
                       <span class="math-formula">#C = 1, #C = 2, #C = 3</span>
                     </td>
-                    <td class="view-button"><a href="https://example.com/notebook1" target="_blank">View Notebook</a></td>
+                    <td class="view-button"><a href="https://example.com/notebook1" target="_blank" class="pulse">View Notebook</a></td>
                   </tr>
                   <tr>
                     <td class="dataset-cell">FMNIST</td>
@@ -299,44 +405,45 @@
                       <span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span><br>
                       <span class="math-formula">#C = 1, #C = 2, #C = 3</span>
                     </td>
-                    <td class="view-button"><a href="https://example.com/notebook2" target="_blank">View Notebook</a></td>
+                    <td class="view-button"><a href="https://example.com/notebook2" target="_blank" class="pulse">View Notebook</a></td>
                   </tr>
                   <tr>
-                    <td colspan="4" class="section-header"></td>
+                    <td colspan="4" class="section-header" style="background-color: #333; height: 5px;"></td>
                   </tr>
                   <tr>
                     <td rowspan="6" class="feature-skew">Feature distribution skew</td>
                     <td class="dataset-cell">MNIST</td>
                     <td><span class="math-formula">x ~ Gau(0,1)</span></td>
-                    <td class="view-button"><a href="https://example.com/notebook3" target="_blank">View Notebook</a></td>
+                    <td class="view-button"><a href="https://example.com/notebook3" target="_blank" class="pulse">View Notebook</a></td>
                   </tr>
                   <tr>
                     <td class="dataset-cell">FMNIST</td>
                     <td><span class="math-formula">x ~ Gau(0,1)</span></td>
-                    <td class="view-button"><a href="https://example.com/notebook4" target="_blank">View Notebook</a></td>
+                    <td class="view-button"><a href="https://example.com/notebook4" target="_blank" class="pulse">View Notebook</a></td>
                   </tr>
                   <tr>
                     <td class="dataset-cell">CIFAR-10</td>
                     <td><span class="math-formula">x ~ Gau(0,1)</span></td>
-                    <td class="view-button"><a href="https://example.com/notebook5" target="_blank">View Notebook</a></td>
+                    <td class="view-button"><a href="https://example.com/notebook5" target="_blank" class="pulse">View Notebook</a></td>
                   </tr>
                   <tr>
                     <td class="dataset-cell">SVHN</td>
                     <td><span class="math-formula">x ~ Gau(0,1)</span></td>
-                    <td class="view-button"><a href="https://example.com/notebook6" target="_blank">View Notebook</a></td>
+                    <td class="view-button"><a href="https://example.com/notebook6" target="_blank" class="pulse">View Notebook</a></td>
                   </tr>
                   <tr>
                     <td class="dataset-cell">FCUBE</td>
                     <td><span class="math-formula">synthetic</span></td>
-                    <td class="view-button"><a href="https://example.com/notebook7" target="_blank">View Notebook</a></td>
+                    <td class="view-button"><a href="https://example.com/notebook7" target="_blank" class="pulse">View Notebook</a></td>
                   </tr>
                   <tr>
                     <td class="dataset-cell">FEMNIST</td>
                     <td><span class="math-formula">real-world</span></td>
-                    <td class="view-button"><a href="https://example.com/notebook8" target="_blank">View Notebook</a></td>
+                    <td class="view-button"><a href="https://example.com/notebook8" target="_blank" class="pulse">View Notebook</a></td>
                   </tr>
                 </tbody>
               </table>
+            </div>
   
   </section>
 
