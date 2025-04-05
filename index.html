@@ -313,326 +313,10 @@
     .pulse {
       animation: pulse 2s infinite;
     }
-</style>
-
-<body>
-
-
-  <section class="hero">
-    <div class="hero-body">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered">
-          <div class="column has-text-centered">
-            <h1 class="title is-1 publication-title">  A <span class="is-size-2"><span class="is-size-1">B</span>enchmark <span class="is-size-1">S</span>tudy <span class="is-size-1">o</span>n <span class="is-size-1">R</span>ealistic <span class="is-size-1">N</span>on-<span class="is-size-1">IID</span> <span class="is-size-1">D</span>ata Silos</span></h1>
-            <h3 class="title is-3 publication-title">Fundamentals and Experimental Analysis of Federated Learning Algorithms</h3>
-            <h5 class="subtitle is-5 publication-awards">Coming</h5>
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">
-                <a href="https://scholar.google.com/citations?user=AVt7JDYAAAAJ&hl=fr" style="color:#f68946;font-weight:normal;">Mohammed Nechba<sup>*</sup></a>,
-                <a href="https://scholar.google.com/citations?user=CLgOVHUAAAAJ&hl=fr" style="color:#f68946;font-weight:normal;">Abdellatif El Afia</a>,
-                <a href="https://scholar.google.com/citations?user=moRsZ2kAAAAJ&hl=fr" style="color:#f68946;font-weight:normal;">Bessam Abdulrazak</a>
-
-              </span>
-            </div>
-
-            <div class="is-size-5 publication-authors">
-              <span class="author-block"><b style="color:#f68946; font-weight:normal">&#x25B6 </b> University of Mohammed-V</b></span>
-              <span class="author-block"><b style="color:#008AD7; font-weight:normal">&#x25B6 </b> University of Sherbrooke</span>
-            </div>
-
-            <div class="is-size-6 publication-authors">
-              <span class="author-block"><sup>*</sup>Equal Contribution</span>
-            </div>
-
-            <div class="column has-text-centered">
-              <div class="publication-links">
-                <span class="link-block">
-                  <a href="-------" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="ai ai-arxiv"></i>
-                    </span>
-                    <span>arXiv</span>
-                  </a>
-                </span>
-                <span class="link-block">
-                  <a href="https://github.com/NechbaMohammed/FLBenchmark?tab=readme-ov-file" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fab fa-github"></i>
-                    </span>
-                    <span>Code</span>
-                  </a>
-                </span>
-                <span class="link-block">
-                  <a href="https://pypi.org/project/fedbench/" target="_blank" class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fas fa-box"></i>
-                    </span>
-                    <span>PyPI</span>
-                  </a>
-                </span>
-                
-
-
-                
-
-              
-              </div>
-            </div>
-
-            <!-- <div class="table-container">
-              <table class="table is-bordered is-hoverable is-fullwidth">
-                <thead>
-                  <tr>
-                    <th style="color: yellow;">CATEGORY</th>
-                    <th style="color: yellow;">DATASET</th>
-                    <th style="color: yellow;">PARTITIONING</th>
-                    <th style="color: yellow;">NOTEBOOK LINK</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td rowspan="2" class="label-skew">Label distribution skew</td>
-                    <td class="dataset-cell">MNIST</td>
-                    <td>
-                      <span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span><br>
-                      <span class="math-formula">#C = 1, #C = 2, #C = 3</span>
-                    </td>
-                    <td class="view-button"><a href="https://example.com/notebook1" target="_blank" class="pulse">View Notebook</a></td>
-                  </tr>
-                  <tr>
-                    <td class="dataset-cell">FMNIST</td>
-                    <td>
-                      <span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span><br>
-                      <span class="math-formula">#C = 1, #C = 2, #C = 3</span>
-                    </td>
-                    <td class="view-button"><a href="https://example.com/notebook2" target="_blank" class="pulse">View Notebook</a></td>
-                  </tr>
-                  <tr>
-                    <td colspan="4" class="section-header" style="background-color: #333; height: 5px;"></td>
-                  </tr>
-                  <tr>
-                    <td rowspan="6" class="feature-skew">Feature distribution skew</td>
-                    <td class="dataset-cell">MNIST</td>
-                    <td><span class="math-formula">x ~ Gau(0,1)</span></td>
-                    <td class="view-button"><a href="https://example.com/notebook3" target="_blank" class="pulse">View Notebook</a></td>
-                  </tr>
-                  <tr>
-                    <td class="dataset-cell">FMNIST</td>
-                    <td><span class="math-formula">x ~ Gau(0,1)</span></td>
-                    <td class="view-button"><a href="https://example.com/notebook4" target="_blank" class="pulse">View Notebook</a></td>
-                  </tr>
-                  <tr>
-                    <td class="dataset-cell">CIFAR-10</td>
-                    <td><span class="math-formula">x ~ Gau(0,1)</span></td>
-                    <td class="view-button"><a href="https://example.com/notebook5" target="_blank" class="pulse">View Notebook</a></td>
-                  </tr>
-                  <tr>
-                    <td class="dataset-cell">SVHN</td>
-                    <td><span class="math-formula">x ~ Gau(0,1)</span></td>
-                    <td class="view-button"><a href="https://example.com/notebook6" target="_blank" class="pulse">View Notebook</a></td>
-                  </tr>
-                  <tr>
-                    <td class="dataset-cell">FCUBE</td>
-                    <td><span class="math-formula">synthetic</span></td>
-                    <td class="view-button"><a href="https://example.com/notebook7" target="_blank" class="pulse">View Notebook</a></td>
-                  </tr>
-                  <tr>
-                    <td class="dataset-cell">FEMNIST</td>
-                    <td><span class="math-formula">real-world</span></td>
-                    <td class="view-button"><a href="https://example.com/notebook8" target="_blank" class="pulse">View Notebook</a></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
   
-  </section> -->
-
-  <section class="hero teaser">
-    <div class="container is-max-desktop">
-      <div class="hero-body">
-        <h4 class="subtitle has-text-centered">
-          🔥<span style="color: #ff3860">[NEW!]</span> FedBench-0.1.1  enables efficient FL benchmarking, evaluating 8+ algorithms across 9+ datasets (images/tabular) on one A40 GPU in ~2 weeks. It offers precise control over client heterogeneity with minimal setup, providing comprehensive metrics for actionable algorithm selection.   <br><br>
-          This end-to-end framework sets a new reproducibility standard through production-ready implementations, enabling direct performance comparisons while reducing validation overhead.
-        </h4>
-      </div>
-    </div>
-  </section>
-  
-
-
-
-  <section class="section"  style="background-color:#efeff081">
-    <div class="container is-max-desktop">
-      <!-- Abstract. -->
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-six-fifths">
-          <h2 class="title is-3">Abstract</h2>
-          <div class="content has-text-justified">
-            <!-- <p>
-              Instruction tuning large language models (LLMs) using machine-generated instruction-following data has improved zero-shot capabilities on new tasks in the language domain, but the idea is less explored in the multimodal field.
-              <ol type="1">
-                <li><b>Multimodal Instruct Data</b>. <span style="font-size: 95%;">We present the first attempt to use <a href="https://openai.com/research/gpt-4">language-only GPT-4</a> to generate multimodal language-image instruction-following data. </span></li>
-                <li><b>LLaVA Model</b>. <span style="font-size: 95%;">We introduce <it><b>LLaVA</b> (<b>L</b>arge <b>L</b>anguage-<b>a</b>nd-<b>V</b>ision <b>A</b>ssistant)</it>, an end-to-end trained large multimodal model that connects a vision encoder and LLM for general-purpose visual and language understanding.</li>
-                <li><b>Performance</b>. <span style="font-size: 95%;">Our early experiments show that LLaVA demonstrates impressive multimodel chat abilities, sometimes exhibiting the behaviors of multimodal GPT-4 on unseen images/instructions, and yields a 85.1% relative score compared with GPT-4 on a synthetic multimodal instruction-following dataset.
-                  When fine-tuned on <a href="https://scienceqa.github.io/">Science QA</a>, the synergy of LLaVA and GPT-4  achieves a new state-of-the-art accuracy of 92.53%.</li>
-                <li><b>Open-source</b>. <span style="font-size: 95%;">We make GPT-4 generated visual instruction tuning data, our model and code base publicly available.</li>
-              </ol>  
-           </p> -->
-  
-          </div>
-        </div>
-      </div>
-        
-    </div>
-  </section>
-
-
-  
-<section class="section">
-  <!-- Results. -->
-  <div class="columns is-centered has-text-centered">
-    <div class="column is-six-fifths">
-      <h2 class="title is-3"><img id="painting_icon" width="3%" src="https://cdn-icons-png.flaticon.com/512/5886/5886212.png"> Dataset Information</h2>
-    </div>
-  </div>
-  <!-- </div> -->
-  <!--/ Results. -->    
-
-  <div class="column is-six-fifths" >
-    <table class="GeneratedTable">
-      <thead>
-        <tr>
-          <th style="color: yellow;">Datasets</th>
-          <th style="color: yellow;">#training instances</th>
-          <th style="color: yellow;">#test instances</th>
-          <th style="color: yellow;">#features</th>
-          <th style="color: yellow;">#classes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td> <a href="https://pytorch.org/vision/main/generated/torchvision.datasets.MNIST.html">MNIST</a></td>
-          <td>60,000</td>
-          <td>10,000</td>
-          <td>784</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td> <a href="https://github.com/zalandoresearch/fashion-mnist">FMNIST</a></td>
-          <td>60,000</td>
-          <td>10,000</td>
-          <td>784</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td><a href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-10</a></td>
-          <td>50,000</td>
-          <td>10,000</td>
-          <td>3,072</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td> <a href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-100</a></td>
-          <td>50,000</td>
-          <td>10,000</td>
-          <td>3,072</td>
-          <td>100</td>
-        </tr>
-        <tr>
-          <td> <a href="https://huggingface.co/datasets/ufldl-stanford/svhn">SVHN</a></td>
-          <td>73,257</td>
-          <td>26,032</td>
-          <td>3,072</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td> <a href="https://huggingface.co/datasets/flwrlabs/cinic10">CINIC10</a></td>
-          <td>90,000</td>
-          <td>90,000</td>
-          <td>3,072</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td> <a href="https://huggingface.co/datasets/flwrlabs/fed-isic2019">FED-ISIC2019</a></td>
-          <td>18,597</td>
-          <td>4,650</td>
-          <td>3,072</td>
-          <td>8</td>
-        </tr>
-        <tr>
-          <td> <a href="https://huggingface.co/datasets/scikit-learn/adult-census-income">Adult</a></td>
-          <td>26,048</td>
-          <td>6,512</td>
-          <td>99</td>
-          <td>2</td>
-        </tr>
-
-        <tr>
-          <td> <a href="https://huggingface.co/datasets/Nechba/fcube">FCUBE</a></td>
-          <td>4,000</td>
-          <td>1,000</td>
-          <td>3</td>
-          <td>2</td>
-        </tr>
-        <tr>
-          <td> <a href="https://huggingface.co/datasets/flwrlabs/femnist">FEMNIST</a></td>
-          <td>649,184</td>
-          <td>165,093</td>
-          <td>784</td>
-          <td>62</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-
-<!-- CSS Code: Place this code in the document's head (between the 'head' tags) -->
-<style>
-  table.GeneratedTable {
-    width: 100%;
-    background-color: #ffffff;
-    border-collapse: collapse;
-    border-width: 2px;
-    border-color: #c1c4c5;
-    border-style: solid;
-    color: #000000;
-  }
-  
-  table.GeneratedTable td, table.GeneratedTable th {
-    border-width: 2px;
-    border-color: #9b9d9e;
-    border-style: solid;
-    padding: 3px;
-  }
-  
-  table.GeneratedTable thead {
-    background-color: #6691ee;
-  }
-  </style>
-    
-    </div>
-  </div>
-
-
-</section>
- 
-
-
-
-<section class="section">
-  <!-- Results. -->
-  <div class="columns is-centered has-text-centered">
-    <div class="column is-six-fifths">
-      <h2 class="title is-3"><img id="painting_icon" width="3%" src="https://cdn-icons-png.flaticon.com/512/3515/3515174.png"> Performance</h2>
-    </div>
-  </div>
-
-  <style>
-    /* Table Container */
-.table-container {
-  max-width: 90%;
+  /* Table Container */
+  .table-container {
+  max-width: 70%;
   overflow-x: auto;
   margin: 20px auto;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
@@ -811,6 +495,324 @@ tbody tr:hover {
   100% { box-shadow: 0 0 0 0 rgba(41, 128, 185, 0); }
 }
 
+/* Add this CSS to your stylesheet */
+.section-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.section-icon {
+  width: 32px;
+  height: auto;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+
+.image-container {
+  width: 100%;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.responsive-image {
+  max-width: 80%;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.responsive-image:hover {
+  transform: scale(1.01);
+}
+
+/* Media queries for responsiveness */
+@media screen and (max-width: 768px) {
+  .section-title {
+    font-size: 1.3rem;
+  }
+  
+  .section-icon {
+    width: 28px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .section-icon {
+    margin-bottom: 8px;
+  }
+}
+</style>
+
+<body>
+
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">  A <span class="is-size-2"><span class="is-size-1">B</span>enchmark <span class="is-size-1">S</span>tudy <span class="is-size-1">o</span>n <span class="is-size-1">R</span>ealistic <span class="is-size-1">N</span>on-<span class="is-size-1">IID</span> <span class="is-size-1">D</span>ata Silos</span></h1>
+            <h3 class="title is-3 publication-title">Fundamentals and Experimental Analysis of Federated Learning Algorithms</h3>
+            <h5 class="subtitle is-5 publication-awards">Coming</h5>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                <a href="https://scholar.google.com/citations?user=AVt7JDYAAAAJ&hl=fr" style="color:#f68946;font-weight:normal;">Mohammed Nechba<sup>*</sup></a>,
+                <a href="https://scholar.google.com/citations?user=CLgOVHUAAAAJ&hl=fr" style="color:#f68946;font-weight:normal;">Abdellatif El Afia</a>,
+                <a href="https://scholar.google.com/citations?user=moRsZ2kAAAAJ&hl=fr" style="color:#f68946;font-weight:normal;">Bessam Abdulrazak</a>
+
+              </span>
+            </div>
+
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><b style="color:#f68946; font-weight:normal">&#x25B6 </b> University of Mohammed-V</b></span>
+              <span class="author-block"><b style="color:#008AD7; font-weight:normal">&#x25B6 </b> University of Sherbrooke</span>
+            </div>
+
+            <div class="is-size-6 publication-authors">
+              <span class="author-block"><sup>*</sup>Equal Contribution</span>
+            </div>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="-------" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://github.com/NechbaMohammed/FLBenchmark?tab=readme-ov-file" target="_blank"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://pypi.org/project/fedbench/" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-box"></i>
+                    </span>
+                    <span>PyPI</span>
+                  </a>
+                </span>
+                
+
+
+                
+
+              
+              </div>
+            </div>
+
+            
+
+  <section class="hero teaser">
+    <div class="container is-max-desktop">
+      <div class="hero-body">
+        <h4 class="subtitle has-text-centered">
+          🔥<span style="color: #ff3860">[NEW!]</span> FedBench-0.1.1  enables efficient FL benchmarking, evaluating 8+ algorithms across 9+ datasets (images/tabular) on one A40 GPU in ~2 weeks. It offers precise control over client heterogeneity with minimal setup, providing comprehensive metrics for actionable algorithm selection.   <br><br>
+          This end-to-end framework sets a new reproducibility standard through production-ready implementations, enabling direct performance comparisons while reducing validation overhead.
+        </h4>
+      </div>
+    </div>
+  </section>
+  
+
+
+
+  <section class="section"  style="background-color:#efeff081">
+    <div class="container is-max-desktop">
+      <!-- Abstract. -->
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-six-fifths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <!-- <p>
+              Instruction tuning large language models (LLMs) using machine-generated instruction-following data has improved zero-shot capabilities on new tasks in the language domain, but the idea is less explored in the multimodal field.
+              <ol type="1">
+                <li><b>Multimodal Instruct Data</b>. <span style="font-size: 95%;">We present the first attempt to use <a href="https://openai.com/research/gpt-4">language-only GPT-4</a> to generate multimodal language-image instruction-following data. </span></li>
+                <li><b>LLaVA Model</b>. <span style="font-size: 95%;">We introduce <it><b>LLaVA</b> (<b>L</b>arge <b>L</b>anguage-<b>a</b>nd-<b>V</b>ision <b>A</b>ssistant)</it>, an end-to-end trained large multimodal model that connects a vision encoder and LLM for general-purpose visual and language understanding.</li>
+                <li><b>Performance</b>. <span style="font-size: 95%;">Our early experiments show that LLaVA demonstrates impressive multimodel chat abilities, sometimes exhibiting the behaviors of multimodal GPT-4 on unseen images/instructions, and yields a 85.1% relative score compared with GPT-4 on a synthetic multimodal instruction-following dataset.
+                  When fine-tuned on <a href="https://scienceqa.github.io/">Science QA</a>, the synergy of LLaVA and GPT-4  achieves a new state-of-the-art accuracy of 92.53%.</li>
+                <li><b>Open-source</b>. <span style="font-size: 95%;">We make GPT-4 generated visual instruction tuning data, our model and code base publicly available.</li>
+              </ol>  
+           </p> -->
+  
+          </div>
+        </div>
+      </div>
+        
+    </div>
+  </section>
+
+
+  
+<section class="section">
+  <!-- Results. -->
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-six-fifths">
+      <h2 class="title is-3"><img id="painting_icon" width="3%" src="https://cdn-icons-png.flaticon.com/512/5886/5886212.png"> Dataset Information</h2>
+    </div>
+  </div>
+  <!-- </div> -->
+  <!--/ Results. -->    
+
+  <div class="column is-full-width" >
+    <table class="GeneratedTable">
+      <thead>
+        <tr>
+          <th style="color: yellow;">Datasets</th>
+          <th style="color: yellow;">#training instances</th>
+          <th style="color: yellow;">#test instances</th>
+          <th style="color: yellow;">#features</th>
+          <th style="color: yellow;">#classes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td> <a href="https://pytorch.org/vision/main/generated/torchvision.datasets.MNIST.html">MNIST</a></td>
+          <td>60,000</td>
+          <td>10,000</td>
+          <td>784</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td> <a href="https://github.com/zalandoresearch/fashion-mnist">FMNIST</a></td>
+          <td>60,000</td>
+          <td>10,000</td>
+          <td>784</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td><a href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-10</a></td>
+          <td>50,000</td>
+          <td>10,000</td>
+          <td>3,072</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td> <a href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-100</a></td>
+          <td>50,000</td>
+          <td>10,000</td>
+          <td>3,072</td>
+          <td>100</td>
+        </tr>
+        <tr>
+          <td> <a href="https://huggingface.co/datasets/ufldl-stanford/svhn">SVHN</a></td>
+          <td>73,257</td>
+          <td>26,032</td>
+          <td>3,072</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td> <a href="https://huggingface.co/datasets/flwrlabs/cinic10">CINIC10</a></td>
+          <td>90,000</td>
+          <td>90,000</td>
+          <td>3,072</td>
+          <td>10</td>
+        </tr>
+        <tr>
+          <td> <a href="https://huggingface.co/datasets/flwrlabs/fed-isic2019">FED-ISIC2019</a></td>
+          <td>18,597</td>
+          <td>4,650</td>
+          <td>3,072</td>
+          <td>8</td>
+        </tr>
+        <tr>
+          <td> <a href="https://huggingface.co/datasets/scikit-learn/adult-census-income">Adult</a></td>
+          <td>26,048</td>
+          <td>6,512</td>
+          <td>99</td>
+          <td>2</td>
+        </tr>
+
+        <tr>
+          <td> <a href="https://huggingface.co/datasets/Nechba/fcube">FCUBE</a></td>
+          <td>4,000</td>
+          <td>1,000</td>
+          <td>3</td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td> <a href="https://huggingface.co/datasets/flwrlabs/femnist">FEMNIST</a></td>
+          <td>649,184</td>
+          <td>165,093</td>
+          <td>784</td>
+          <td>62</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+<!-- CSS Code: Place this code in the document's head (between the 'head' tags) -->
+<style>
+  table.GeneratedTable {
+    width: 100%;
+    background-color: #ffffff;
+    border-collapse: collapse;
+    border-width: 2px;
+    border-color: #c1c4c5;
+    border-style: solid;
+    color: #000000;
+  }
+  
+  table.GeneratedTable td, table.GeneratedTable th {
+    border-width: 2px;
+    border-color: #9b9d9e;
+    border-style: solid;
+    padding: 3px;
+  }
+  
+  table.GeneratedTable thead {
+    background-color: #6691ee;
+  }
+  </style>
+    
+    </div>
+  </div>
+
+
+</section>
+ 
+
+
+
+<section class="section">
+  <!-- Results. -->
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-six-fifths">
+      <h2 class="title is-3"><img id="painting_icon" width="3%" src="https://cdn-icons-png.flaticon.com/512/3515/3515174.png"> Performance</h2>
+    </div>
+  </div>
+
+  <style>
+  
   </style>
 
   <!-- </div> -->
@@ -821,10 +823,11 @@ tbody tr:hover {
   <!-- Grounedtext2img. -->
   <div class="columns is-centered">
     <div class="column is-full-width">
-      <h2 class="title is-4"><img id="painting_icon" width="4%" src="images/icone1.png"> <span style="font-size: 100%;"></span> Federated Learning Algorithms Comparison Table  </h2>
       
       <!-- <p style="font-family:Times New Roman">aa<b></b>            -->
         <div class="table-container">
+          <h2 class="title is-4"><img id="painting_icon" width="4%" src="images/icone1.png"> <span style="font-size: 100%;"></span> Federated Learning Algorithms Comparison Table  </h2>
+
           <table class="table is-bordered is-hoverable is-fullwidth">
             <thead>
               <tr>
@@ -1190,29 +1193,29 @@ tbody tr:hover {
     
   </div>
  </div> 
+ 
   <!-- Grounedtext2img. -->
-  <div class="columns is-centered">
-    <div class="column is-full-width">
+  <div class="columns is-centered has-text-centered">
+    <div>
+      
       <h2 class="title is-4"> <img id="painting_icon" width="4%" src="images/icone2.png"><span style="font-size: 100%;">  Training Curves:</span>  Comparative Training Performance Across Datasets      </h2>
-      
-      <div>
-        <a href="images/label Skew C_3.png" target="_blank" title="Plot 1" style="display: block; text-align: center;"><img id="painting_icon" width="65%" src="images/label Skew C_3.png"></a>
+     
+      <a href="images/label Skew C_3.png" target="_blank" title="Plot 1" style="display: block; text-align: center;">
+        <img id="painting_icon" src="images/label Skew C_3.png" style="width: 70%; max-width: 800px;">
+      </a>
         <!-- <script data-plotly="lichunyuan24:1" sharekey-plotly="v4opE3TJpxqQ08RYsDD4iv" src="https://plotly.com/embed.js" async></script> -->
-    </div>
+    
+        <h2 class="title is-4"> <img id="painting_icon" width="4%" src="images/icone3.png"><span style="font-size: 100%;">  </span> Local Epoch Sensitivity Analysis      </h2>
+      
+      
+        <a href="images/test.jpg" target="_blank" title="Plot 1" style="display: block; text-align: center;"><img id="painting_icon" src="images/test.jpg"></a>
+        <!-- <script data-plotly="lichunyuan24:1" sharekey-plotly="v4opE3TJpxqQ08RYsDD4iv" src="https://plotly.com/embed.js" async></script> -->
+   
+      </div>
               
     </div>
-  </div>
+ 
 
-  <div class="columns is-centered">
-    <div class="column is-full-width">
-      <h2 class="title is-4"> <img id="painting_icon" width="4%" src="images/icone3.png"><span style="font-size: 100%;">  </span> Local Epoch Sensitivity Analysis      </h2>
-      
-      <div>
-        <a href="images/test.jpg" target="_blank" title="Plot 1" style="display: block; text-align: center;"><img id="painting_icon" width="65%" src="images/test.jpg"></a>
-        <!-- <script data-plotly="lichunyuan24:1" sharekey-plotly="v4opE3TJpxqQ08RYsDD4iv" src="https://plotly.com/embed.js" async></script> -->
-    </div>
-              
-    </div>
   </div>
 </section>
 
