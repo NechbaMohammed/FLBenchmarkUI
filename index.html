@@ -772,26 +772,68 @@ tbody tr:hover {
 
 <!-- CSS Code: Place this code in the document's head (between the 'head' tags) -->
 <style>
-  table.GeneratedTable {
+ table.GeneratedTable {
+  width: 100%;
+  background-color: #ffffff;
+  border-collapse: collapse;
+  border-width: 2px;
+  border-color: #c1c4c5;
+  border-style: solid;
+  color: #000000;
+}
+
+table.GeneratedTable td, table.GeneratedTable th {
+  border-width: 2px;
+  border-color: #9b9d9e;
+  border-style: solid;
+  padding: 3px;
+}
+
+table.GeneratedTable thead {
+  background-color: #6691ee;
+}
+
+/* Responsive features */
+@media screen and (max-width: 600px) {
+  /* On small screens, make the table scrollable horizontally */
+  .table-container {
+    overflow-x: auto;
     width: 100%;
-    background-color: #ffffff;
-    border-collapse: collapse;
-    border-width: 2px;
-    border-color: #c1c4c5;
-    border-style: solid;
-    color: #000000;
   }
   
+  /* Optional: adjust padding for smaller screens */
   table.GeneratedTable td, table.GeneratedTable th {
-    border-width: 2px;
-    border-color: #9b9d9e;
-    border-style: solid;
-    padding: 3px;
+    padding: 2px;
+    font-size: 0.9em;
+  }
+}
+
+/* For very small screens, you can transform the table */
+@media screen and (max-width: 400px) {
+  table.GeneratedTable thead {
+    display: none; /* Hide headers on very small screens */
   }
   
-  table.GeneratedTable thead {
-    background-color: #6691ee;
+  table.GeneratedTable td {
+    display: block;
+    width: 100%;
+    text-align: right;
+    border-bottom: 0;
   }
+  
+  /* Add labels for each cell using data attributes in your HTML */
+  table.GeneratedTable td:before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+  }
+  
+  /* Only add bottom border to the last cell of each row */
+  table.GeneratedTable tr td:last-child {
+    border-bottom: 2px solid #9b9d9e;
+    margin-bottom: 10px;
+  }
+}
   </style>
     
     </div>
