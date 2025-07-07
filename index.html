@@ -1199,29 +1199,214 @@ table.GeneratedTable thead {
     
   </div>
  </div> 
- 
-  <!-- Grounedtext2img. -->
-  <div class="columns is-centered has-text-centered">
-    <div>
-      
-      <h2 class="title is-4"> <img id="painting_icon" width="4%" src="images/icone2.png"><span style="font-size: 100%;">  Training Curves:</span>  Comparative Training Performance Across Datasets      </h2>
-     
-      <a href="images/label Skew C_3.png" target="_blank" title="Plot 1" style="display: block; text-align: center;">
-        <img id="painting_icon" src="images/label Skew C_3.png" style="width: 70%; max-width: 800px;">
-      </a>
-        <!-- <script data-plotly="lichunyuan24:1" sharekey-plotly="v4opE3TJpxqQ08RYsDD4iv" src="https://plotly.com/embed.js" async></script> -->
-    
-        <h2 class="title is-4"> <img id="painting_icon" width="4%" src="images/icone3.png"><span style="font-size: 100%;">  </span> Local Epoch Sensitivity Analysis      </h2>
-      
-      
-        <a href="images/test.jpg" target="_blank" title="Plot 1" style="display: block; text-align: center;"><img id="painting_icon" src="images/test.jpg"></a>
-        <!-- <script data-plotly="lichunyuan24:1" sharekey-plotly="v4opE3TJpxqQ08RYsDD4iv" src="https://plotly.com/embed.js" async></script> -->
-   
-      </div>
-              
-    </div>
- 
+ <!-- Main container for all plots -->
+<div class="container is-max-desktop">
 
+  <!-- Section for Training Curves -->
+  <div class="columns is-centered">
+    <div class="column is-full-width has-text-centered">
+      
+      <h2 class="title is-4" style="margin-top: 2rem; margin-bottom: 2rem;">
+        <img id="painting_icon" width="4%" src="images/icone2.png" style="vertical-align: middle;">
+        <span style="font-size: 100%; vertical-align: middle;">Training Curves: Comparative Performance</span>
+      </h2>
+
+      <!-- CIFAR-10 Training Curves -->
+      <div class="content">
+        <h3 class="title is-5">The training curves of different approaches on CIFAR-10.</h3>
+        <div class="columns is-multiline is-centered">
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cifar10_c1_training_curve.pdf" alt="CIFAR-10 #C = 1">
+              <figcaption class="is-size-7 has-text-weight-semibold">#C = 1</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cifar10_c2_training_curve.pdf" alt="CIFAR-10 #C = 2">
+              <figcaption class="is-size-7 has-text-weight-semibold">#C = 2</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cifar10_c3_training_curve.pdf" alt="CIFAR-10 #C = 3">
+              <figcaption class="is-size-7 has-text-weight-semibold">#C = 3</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cifar10_pk_training_curve.pdf" alt="CIFAR-10 pk ~ Dir(0.5)">
+              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cifar10_x_training_curve.pdf" alt="CIFAR-10 x ~ Gau(0.1)">
+              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">x̂ ~ Gau(0.1)</span></figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cifar10_q_training_curve.pdf" alt="CIFAR-10 q ~ Dir(0.5)">
+              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">q ~ Dir(0.5)</span></figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      <!-- CINIC10 Training Curves -->
+      <div class="content">
+        <h3 class="title is-5">The training curves of different approaches on CINIC10.</h3>
+        <div class="columns is-multiline is-centered">
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cinic10_c1_training_curve.pdf" alt="CINIC10 #C = 1">
+              <figcaption class="is-size-7 has-text-weight-semibold">#C = 1</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cinic10_c2_training_curve.pdf" alt="CINIC10 #C = 2">
+              <figcaption class="is-size-7 has-text-weight-semibold">#C = 2</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cinic10_c3_training_curve.pdf" alt="CINIC10 #C = 3">
+              <figcaption class="is-size-7 has-text-weight-semibold">#C = 3</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cinic10_pk_training_curve.pdf" alt="CINIC10 pk ~ Dir(0.5)">
+              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cinic10_x_training_curve.pdf" alt="CINIC10 x ~ Gau(0.1)">
+              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">x̂ ~ Gau(0.1)</span></figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cinic10_q_training_curve.pdf" alt="CINIC10 q ~ Dir(0.5)">
+              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">q ~ Dir(0.5)</span></figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      <!-- Add other datasets (MNIST, SVHN, FedISIC2019) for training curves here, following the same pattern -->
+      
+    </div>
+  </div>
+
+
+  <!-- Section for Local Epoch Sensitivity -->
+  <div class="columns is-centered">
+    <div class="column is-full-width has-text-centered">
+      
+      <h2 class="title is-4" style="margin-top: 2rem; margin-bottom: 2rem;">
+        <img id="painting_icon" width="4%" src="images/icone3.png" style="vertical-align: middle;">
+        <span style="font-size: 100%; vertical-align: middle;">Local Epoch Sensitivity Analysis</span>
+      </h2>
+
+      <!-- FEDISIC2019 Local Epochs -->
+      <div class="content">
+        <h3 class="title is-5">The test accuracy with different number of local epochs on FEDISIC2019.</h3>
+        <div class="columns is-multiline is-centered">
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/fedisic2019_local_epochs_c1.pdf" alt="FEDISIC2019 Local Epochs #C = 1">
+              <figcaption class="is-size-7 has-text-weight-semibold">#C = 1</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/fedisic2019_local_epochs_c2.pdf" alt="FEDISIC2019 Local Epochs #C = 2">
+              <figcaption class="is-size-7 has-text-weight-semibold">#C = 2</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/fedisic2019_local_epochs_c3.pdf" alt="FEDISIC2019 Local Epochs #C = 3">
+              <figcaption class="is-size-7 has-text-weight-semibold">#C = 3</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/fedisic2019_local_epochs_pk.pdf" alt="FEDISIC2019 Local Epochs pk ~ Dir(0.5)">
+              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/fedisic2019_local_epochs_x.pdf" alt="FEDISIC2019 Local Epochs x ~ Gau(0.1)">
+              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">x̂ ~ Gau(0.1)</span></figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/fedisic2019_local_epochs_q.pdf" alt="FEDISIC2019 Local Epochs q ~ Dir(0.5)">
+              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">q ~ Dir(0.5)</span></figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      <!-- CIFAR-10 Local Epochs -->
+      <div class="content">
+        <h3 class="title is-5">The test accuracy with different number of local epochs on CIFAR-10.</h3>
+        <div class="columns is-multiline is-centered">
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cifar10_local_epochs_c1.pdf" alt="CIFAR-10 Local Epochs #C = 1">
+              <figcaption class="is-size-7 has-text-weight-semibold">#C = 1</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cifar10_local_epochs_c2.pdf" alt="CIFAR-10 Local Epochs #C = 2">
+              <figcaption class="is-size-7 has-text-weight-semibold">#C = 2</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cifar10_local_epochs_c3.pdf" alt="CIFAR-10 Local Epochs #C = 3">
+              <figcaption class="is-size-7 has-text-weight-semibold">#C = 3</figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cifar10_local_epochs_pk.pdf" alt="CIFAR-10 Local Epochs pk ~ Dir(0.5)">
+              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cifar10_local_epochs_x.pdf" alt="CIFAR-10 Local Epochs x ~ Gau(0.1)">
+              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">x̂ ~ Gau(0.1)</span></figcaption>
+            </figure>
+          </div>
+          <div class="column is-one-third">
+            <figure>
+              <img src="images/cifar10_local_epochs_q.pdf" alt="CIFAR-10 Local Epochs q ~ Dir(0.5)">
+              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">q ~ Dir(0.5)</span></figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <hr>
+
+      <!-- Add other datasets (CINIC10, MNIST, SVHN) for local epoch analysis here, following the same pattern -->
+
+    </div>
+  </div>
+</div>
   </div>
 </section>
 
