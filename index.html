@@ -24,298 +24,96 @@
 </head>
 
 <style>
-  .expandable-card .card-text-container {
-    max-height: 200px;
-    overflow-y: hidden;
-    position: relative;
-  }
+/* Body and base styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: #f5f5f5;
+}
 
-  .expandable-card.expanded .card-text-container {
-    max-height: none;
-  }
+/* Expandable card styles */
+.expandable-card .card-text-container {
+  max-height: 200px;
+  overflow-y: hidden;
+  position: relative;
+}
 
-  .expand-btn {
-    position: relative;
-    display: none;
-    background-color: rgba(255, 255, 255, 0.8);
-    /* margin-top: -20px; */
-    /* justify-content: center; */
-    color: #510c75;
-    border-color: transparent;
-  }
+.expandable-card.expanded .card-text-container {
+  max-height: none;
+}
 
-  .expand-btn:hover {
-    background-color: rgba(200, 200, 200, 0.8);
-    text-decoration: none;
-    border-color: transparent;
-    color: #510c75;
-  }
+.expand-btn {
+  position: relative;
+  display: none;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #510c75;
+  border-color: transparent;
+}
 
-  .expand-btn:focus {
-    outline: none;
-    text-decoration: none;
-  }
+.expand-btn:hover {
+  background-color: rgba(200, 200, 200, 0.8);
+  text-decoration: none;
+  border-color: transparent;
+  color: #510c75;
+}
 
-  .expandable-card:not(.expanded) .card-text-container:after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 90px;
-    background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 1));
-  }
+.expand-btn:focus {
+  outline: none;
+  text-decoration: none;
+}
 
-  .expandable-card:not(.expanded) .expand-btn {
-    margin-top: -40px;
-  }
+.expandable-card:not(.expanded) .card-text-container:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 90px;
+  background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 1));
+}
 
-  .card-body {
-    padding-bottom: 5px;
-  }
+.expandable-card:not(.expanded) .expand-btn {
+  margin-top: -40px;
+}
 
-  .vertical-flex-layout {
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
+.card-body {
+  padding-bottom: 5px;
+}
 
-  .figure-img {
-    max-width: 100%;
-    height: auto;
-  }
+/* Layout utilities */
+.vertical-flex-layout {
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
 
-  .adjustable-font-size {
-    font-size: calc(0.5rem + 2vw);
-  }
+.figure-img {
+  max-width: 100%;
+  height: auto;
+}
 
-  .chat-history {
-    flex-grow: 1;
-    overflow-y: auto;
-    /* overflow-x: hidden; */
-    padding: 5px;
-    border-bottom: 1px solid #ccc;
-    margin-bottom: 10px;
-  }
+.adjustable-font-size {
+  font-size: calc(0.5rem + 2vw);
+}
 
-  #gradio pre {
-    background-color: transparent;
-  }
-  .table-container {
-      max-width: 100%;
-      overflow-x: auto;
-      margin: 20px auto;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-      border-radius: 10px;
-      background: #fff;
-      padding: 15px;
-      transition: all 0.3s ease;
-    }
-    
-    .table-container:hover {
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-      transform: translateY(-5px);
-    }
-    
-    .table {
-      border-collapse: separate;
-      border-spacing: 0;
-      width: 100%;
-      margin-bottom: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    .table.is-bordered {
-      border: none;
-    }
-    
-    .table th, .table td {
-      border: none;
-      padding: 15px;
-      vertical-align: middle;
-      position: relative;
-    }
-    
-    .table th {
-      background-color: #2c3e50;
-      color: #ffff00;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      font-size: 16px;
-      text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .table th:after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background-color: #ffff00;
-      transition: width 0.3s ease;
-    }
-    
-    .table th:hover:after {
-      width: 100%;
-    }
-    
-    .table th:first-child {
-      border-top-left-radius: 8px;
-    }
-    
-    .table th:last-child {
-      border-top-right-radius: 8px;
-    }
-    
-    .table tbody tr:last-child td:first-child {
-      border-bottom-left-radius: 8px;
-    }
-    
-    .table tbody tr:last-child td:last-child {
-      border-bottom-right-radius: 8px;
-    }
-    
-    .table tbody tr {
-      transition: all 0.3s;
-      border-left: 3px solid transparent;
-    }
-    
-    .table tbody tr:nth-child(odd) {
-      background-color: #f8f9fe;
-    }
-    
-    .table tbody tr:nth-child(even) {
-      background-color: #ffffff;
-    }
-    
-    .table.is-hoverable tbody tr:hover {
-      background-color: #eef1ff;
-      border-left: 3px solid #2980b9;
-      transform: translateX(5px);
-    }
-    
-    .table a {
-      color: #2980b9;
-      text-decoration: none;
-      font-weight: 600;
-      padding: 8px 15px;
-      border-radius: 20px;
-      background-color: #e8f4fc;
-      transition: all 0.3s;
-      display: inline-block;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-    }
-    
-    .table a:before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: #2980b9;
-      transition: all 0.3s ease;
-      z-index: -1;
-    }
-    
-    .table a:hover {
-      color: white;
-    }
-    
-    .table a:hover:before {
-      left: 0;
-    }
-    
-    .label-skew {
-      color: #2c3e50;
-      font-weight: 600;
-      position: relative;
-      transition: all 0.3s ease;
-    }
-    
-    .feature-skew {
-      color: #2c3e50;
-      font-weight: 600;
-      position: relative;
-      transition: all 0.3s ease;
-    }
-    
-    .dataset-cell {
-      color: #34495e;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-    
-    .math-formula {
-      background-color: #f1f5f9;
-      padding: 5px 10px;
-      border-radius: 4px;
-      display: inline-block;
-      color: #34495e;
-      font-family: 'Courier New', monospace;
-      transition: all 0.3s ease;
-      border-left: 2px solid transparent;
-    }
-    
-    .math-formula:hover {
-      background-color: #e3eaf3;
-      transform: translateX(5px);
-      border-left: 2px solid #2980b9;
-    }
-    
-    .section-header {
-      background-color: #ecf0f1 !important;
-      color: #2c3e50 !important;
-      text-align: center;
-      font-weight: bold;
-      letter-spacing: 1px;
-      padding: 15px !important;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .section-header:before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 2px;
-      bottom: 0;
-      left: 0;
-      background-image: linear-gradient(to right, transparent, #2980b9, transparent);
-    }
-    
-    .view-button {
-      text-align: center;
-    }
-    
-    @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(41, 128, 185, 0.4);
-      }
-      70% {
-        box-shadow: 0 0 0 10px rgba(41, 128, 185, 0);
-      }
-      100% {
-        box-shadow: 0 0 0 0 rgba(41, 128, 185, 0);
-      }
-    }
-    
-    .pulse {
-      animation: pulse 2s infinite;
-    }
-  
-  /* Table Container */
-  .table-container {
+/* Chat history */
+.chat-history {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
+#gradio pre {
+  background-color: transparent;
+}
+
+/* Main table container */
+.table-container {
   max-width: 70%;
   overflow-x: auto;
   margin: 20px auto;
@@ -331,22 +129,26 @@
   transform: translateY(-5px);
 }
 
-/* Table Base */
+/* Table base styles */
 table {
   border-collapse: separate;
   border-spacing: 0;
-  width: 70%;
+  width: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #34495e;
   background-color: transparent;
+  min-width: 1200px;
+  font-size: 14px;
 }
 
-/* Table Headers and Cells */
+/* Table headers and cells */
 th, td {
   border: none;
-  padding: 15px;
+  padding: 15px 8px;
   vertical-align: middle;
   position: relative;
+  text-align: center;
+  white-space: nowrap;
 }
 
 th {
@@ -360,6 +162,7 @@ th {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  border: 1px solid #555;
 }
 
 th:after {
@@ -377,7 +180,12 @@ th:hover:after {
   width: 100%;
 }
 
-/* Table Border Radius */
+td {
+  border: 1px solid #ddd;
+  padding: 10px 8px;
+}
+
+/* Table border radius */
 th:first-child {
   border-top-left-radius: 8px;
 }
@@ -394,14 +202,14 @@ tbody tr:last-child td:last-child {
   border-bottom-right-radius: 8px;
 }
 
-/* Table Row Styling */
+/* Table row styling */
 tbody tr {
   transition: all 0.3s;
   border-left: 3px solid transparent;
 }
 
 tbody tr:nth-child(odd) {
-  background-color: #f8f9fe;
+  background-color: #f8f9fa;
 }
 
 tbody tr:nth-child(even) {
@@ -409,12 +217,12 @@ tbody tr:nth-child(even) {
 }
 
 tbody tr:hover {
-  background-color: #eef1ff;
+  background-color: #e3f2fd;
   border-left: 3px solid #2980b9;
   transform: translateX(5px);
 }
 
-/* Link Styling */
+/* Link styling */
 .view-button a {
   color: #2980b9;
   text-decoration: none;
@@ -449,30 +257,27 @@ tbody tr:hover {
   left: 0;
 }
 
-/* Special Cells */
+/* Special cell types */
 .label-skew, .feature-skew, .quantity-skew, .homogeneous {
   color: #2c3e50;
   font-weight: 600;
-  position: relative;
-  transition: all 0.3s ease;
   background-color: #f1f5f9;
+  
+  writing-mode: vertical-lr;
+  text-orientation: mixed;
   text-align: center;
+   vertical-align: center;
+
+
 }
 
 .dataset-cell {
   color: #34495e;
   font-weight: 600;
-  transition: all 0.3s ease;
+  background-color: #e9ecef;
+  vertical-align: middle;
 }
 
-/* Section Headers */
-.section-header {
-  background-color: #2c3e50;
-  height: 8px;
-  padding: 0;
-}
-
-/* Math Formula */
 .math-formula {
   background-color: #f1f5f9;
   padding: 5px 10px;
@@ -482,31 +287,40 @@ tbody tr:hover {
   font-family: 'Courier New', monospace;
   transition: all 0.3s ease;
   border-left: 2px solid #2980b9;
+  font-style: italic;
+  font-family: 'Times New Roman', serif;
 }
 
-/* Animation */
-.pulse {
-  animation: pulse 2s infinite;
+.best-result {
+  font-weight: bold;
+  background-color: #fff3cd;
 }
 
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(41, 128, 185, 0.7); }
-  70% { box-shadow: 0 0 0 10px rgba(41, 128, 185, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(41, 128, 185, 0); }
+/* Performance indicators */
+.performance-high {
+  color: #2e7d32;
 }
 
-/* Add this CSS to your stylesheet */
+.performance-medium {
+  color: #f57700;
+}
+
+.performance-low {
+  color: #d32f2f;
+}
+
+/* Section headers */
+.section-header {
+  background-color: #2c3e50;
+  height: 8px;
+  padding: 0;
+}
+
 .section-container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-}
-
-.section-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
 }
 
 .section-icon {
@@ -522,6 +336,7 @@ tbody tr:hover {
   line-height: 1.4;
 }
 
+/* Image containers */
 .image-container {
   width: 100%;
   margin-bottom: 40px;
@@ -540,6 +355,17 @@ tbody tr:hover {
   transform: scale(1.01);
 }
 
+/* Animation */
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(41, 128, 185, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(41, 128, 185, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(41, 128, 185, 0); }
+}
+
 /* Media queries for responsiveness */
 @media screen and (max-width: 768px) {
   .section-title {
@@ -551,6 +377,18 @@ tbody tr:hover {
   }
 }
 
+@media screen and (max-width: 600px) {
+  .table-container {
+    overflow-x: auto;
+    width: 100%;
+  }
+  
+  th, td {
+    padding: 2px;
+    font-size: 0.9em;
+  }
+}
+
 @media screen and (max-width: 480px) {
   .section-header {
     flex-direction: column;
@@ -559,6 +397,30 @@ tbody tr:hover {
   
   .section-icon {
     margin-bottom: 8px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  table thead {
+    display: none;
+  }
+  
+  table td {
+    display: block;
+    width: 100%;
+    text-align: right;
+    border-bottom: 0;
+  }
+  
+  table td:before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+  }
+  
+  table tr td:last-child {
+    border-bottom: 2px solid #9b9d9e;
+    margin-bottom: 10px;
   }
 }
 </style>
@@ -774,70 +636,7 @@ tbody tr:hover {
   </div>
 
 <!-- CSS Code: Place this code in the document's head (between the 'head' tags) -->
-<style>
- table.GeneratedTable {
-  width: 100%;
-  background-color: #ffffff;
-  border-collapse: collapse;
-  border-width: 2px;
-  border-color: #c1c4c5;
-  border-style: solid;
-  color: #000000;
-}
 
-table.GeneratedTable td, table.GeneratedTable th {
-  border-width: 2px;
-  border-color: #9b9d9e;
-  border-style: solid;
-  padding: 3px;
-}
-
-table.GeneratedTable thead {
-  background-color: #6691ee;
-}
-
-/* Responsive features */
-@media screen and (max-width: 600px) {
-  /* On small screens, make the table scrollable horizontally */
-  .table-container {
-    overflow-x: auto;
-    width: 100%;
-  }
-  
-  /* Optional: adjust padding for smaller screens */
-  table.GeneratedTable td, table.GeneratedTable th {
-    padding: 2px;
-    font-size: 0.9em;
-  }
-}
-
-/* For very small screens, you can transform the table */
-@media screen and (max-width: 400px) {
-  table.GeneratedTable thead {
-    display: none; /* Hide headers on very small screens */
-  }
-  
-  table.GeneratedTable td {
-    display: block;
-    width: 100%;
-    text-align: right;
-    border-bottom: 0;
-  }
-  
-  /* Add labels for each cell using data attributes in your HTML */
-  table.GeneratedTable td:before {
-    content: attr(data-label);
-    float: left;
-    font-weight: bold;
-  }
-  
-  /* Only add bottom border to the last cell of each row */
-  table.GeneratedTable tr td:last-child {
-    border-bottom: 2px solid #9b9d9e;
-    margin-bottom: 10px;
-  }
-}
-  </style>
     
     </div>
   </div>
@@ -890,155 +689,461 @@ table.GeneratedTable thead {
             </thead>
             <tbody>
               <!-- Label Distribution Skew -->
+             <!-- MNIST Dataset -->
+                <tr>
+          
+                    <td rowspan="26" class="label-skew">Label Distribution Skew</td>
+                    <td rowspan="4" class="dataset-cell">MNIST</td>
+                    <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
+                    <td class="performance-high">98.85% ± 0.05%</td>
+                    <td class="performance-high">98.91% ± 0.03%</td>
+                    <td class="performance-low">61.99% ± 1.4%</td>
+                    <td class="best-result performance-high">98.97% ± 0.03%</td>
+                    <td class="performance-high">98.81% ± 0.04%</td>
+                    <td class="performance-high">98.86% ± 0.06%</td>
+                    <td class="performance-high">98.46% ± 0.02%</td>
+                    <td class="performance-high">98.80% ± 0.08%</td>
+                    <td class="performance-high">98.91% ± 0.02%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 1</span></td>
+                    <td class="performance-medium">40.34% ± 26.51%</td>
+                    <td class="performance-medium">40.24% ± 21.8%</td>
+                    <td class="performance-low">10.99% ± 0.5%</td>
+                    <td class="performance-medium">54.66% ± 9.53%</td>
+                    <td class="best-result performance-medium">68.85% ± 9.5%</td>
+                    <td class="performance-medium">34.20% ± 15.34%</td>
+                    <td class="performance-low">18.86% ± 12.77%</td>
+                    <td class="performance-low">9.92% ± 0.24%</td>
+                    <td class="performance-medium">60.73% ± 7.55%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 2</span></td>
+                    <td class="performance-high">97.53% ± 0.07%</td>
+                    <td class="performance-high">97.42% ± 0.12%</td>
+                    <td class="performance-low">21.81% ± 1.92%</td>
+                    <td class="performance-high">97.37% ± 0.31%</td>
+                    <td class="performance-high">95.92% ± 0.37%</td>
+                    <td class="best-result performance-high">97.78% ± 0.22%</td>
+                    <td class="performance-medium">61.91% ± 36.65%</td>
+                    <td class="performance-medium">55.75% ± 32.89%</td>
+                    <td class="performance-high">97.50% ± 0.26%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 3</span></td>
+                    <td class="performance-high">98.53% ± 0.16%</td>
+                    <td class="performance-high">98.65% ± 0.15%</td>
+                    <td class="performance-low">29.95% ± 0.15%</td>
+                    <td class="performance-high">98.43% ± 0.15%</td>
+                    <td class="performance-high">98.22% ± 0.07%</td>
+                    <td class="best-result performance-high">98.69% ± 0.11%</td>
+                    <td class="performance-high">95.8% ± 1.82%</td>
+                    <td class="performance-high">95.06% ± 1.60%</td>
+                    <td class="performance-high">98.56% ± 0.11%</td>
+                </tr>
+                
+                <!-- FMNIST Dataset -->
+                <tr>
+                    <td rowspan="4" class="dataset-cell">FMNIST</td>
+                    <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
+                    <td class="performance-high">86.88% ± 0.38%</td>
+                    <td class="best-result performance-high">87.16% ± 0.18%</td>
+                    <td class="performance-low">48.80% ± 1.36%</td>
+                    <td class="performance-high">87.12% ± 0.32%</td>
+                    <td class="performance-high">86.39% ± 0.19%</td>
+                    <td class="performance-high">86.44% ± 0.15%</td>
+                    <td class="performance-high">84.46% ± 1.72%</td>
+                    <td class="performance-high">87.15% ± 0.38%</td>
+                    <td class="performance-high">87.01% ± 0.28%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 1</span></td>
+                    <td class="performance-low">15.88% ± 4.6%</td>
+                    <td class="performance-low">28.39% ± 16.68%</td>
+                    <td class="performance-low">10% ± 0.0%</td>
+                    <td class="performance-low">20.28% ± 14.53%</td>
+                    <td class="best-result performance-medium">37% ± 4.9%</td>
+                    <td class="performance-low">25.35% ± 10.93%</td>
+                    <td class="performance-low">10% ± 0.0%</td>
+                    <td class="performance-low">10% ± 0.0%</td>
+                    <td class="performance-low">21.13% ± 10.30%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 2</span></td>
+                    <td class="performance-high">79.3% ± 2.37%</td>
+                    <td class="performance-high">78.33% ± 0.7%</td>
+                    <td class="performance-low">22.85% ± 2.60%</td>
+                    <td class="performance-high">75.76% ± 3.94%</td>
+                    <td class="performance-high">78.11% ± 1.03%</td>
+                    <td class="best-result performance-high">81.97% ± 0.78%</td>
+                    <td class="performance-medium">63.14% ± 15.59%</td>
+                    <td class="performance-medium">67.77% ± 2.61%</td>
+                    <td class="performance-high">79.09% ± 1.18%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 3</span></td>
+                    <td class="best-result performance-high">83.67% ± 0.55%</td>
+                    <td class="performance-high">83.62% ± 0.85%</td>
+                    <td class="performance-low">25.56% ± 0.16%</td>
+                    <td class="performance-high">83.51% ± 0.67%</td>
+                    <td class="performance-high">83.52% ± 0.68%</td>
+                    <td class="performance-high">83.42% ± 0.13%</td>
+                    <td class="performance-high">79.62% ± 0.72%</td>
+                    <td class="performance-high">74.57% ± 3.46%</td>
+                    <td class="performance-high">83.56% ± 0.76%</td>
+                </tr>
+                
+                <!-- SVHN Dataset -->
+                <tr>
+                    <td rowspan="4" class="dataset-cell">SVHN</td>
+                    <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
+                    <td class="performance-high">86.44% ± 0.31%</td>
+                    <td class="performance-high">86.48% ± 0.1%</td>
+                    <td class="performance-low">51.74% ± 1.20%</td>
+                    <td class="performance-high">86.48% ± 0.13%</td>
+                    <td class="best-result performance-high">86.7% ± 0.35%</td>
+                    <td class="performance-high">85.34% ± 0.21%</td>
+                    <td class="best-result performance-high">86.7% ± 0.35%</td>
+                    <td class="performance-high">86.15% ± 0.46%</td>
+                    <td class="performance-high">86.45% ± 0.51%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 1</span></td>
+                    <td class="performance-low">14.32% ± 2.3%</td>
+                    <td class="performance-low">13.27% ± 4.53%</td>
+                    <td class="best-result performance-low">19.59% ± 0.0%</td>
+                    <td class="performance-low">9.15% ± 1.82%</td>
+                    <td class="performance-low">18.37% ± 1.72%</td>
+                    <td class="performance-low">18.37% ± 1.72%</td>
+                    <td class="performance-low">15.65% ± 5.58%</td>
+                    <td class="performance-low">12.49% ± 3.03%</td>
+                    <td class="performance-low">12.69% ± 2.30%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 2</span></td>
+                    <td class="performance-high">77.49% ± 1.34%</td>
+                    <td class="best-result performance-high">79.28% ± 0.17%</td>
+                    <td class="performance-low">24.55% ± 0.86%</td>
+                    <td class="performance-high">72.41% ± 2.15%</td>
+                    <td class="performance-high">76.37% ± 1.18%</td>
+                    <td class="performance-high">79.03% ± 0.26%</td>
+                    <td class="performance-medium">57.99% ± 27.15%</td>
+                    <td class="performance-high">74.41% ± 1.76%</td>
+                    <td class="performance-high">76.27% ± 2.53%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 3</span></td>
+                    <td class="performance-high">81.71% ± 1.08%</td>
+                    <td class="performance-high">82.11% ± 1.14%</td>
+                    <td class="performance-low">31.11% ± 0.51%</td>
+                    <td class="performance-high">81.59% ± 0.91%</td>
+                    <td class="best-result performance-high">82.43% ± 0.14%</td>
+                    <td class="performance-high">81.27% ± 0.64%</td>
+                    <td class="best-result performance-high">82.43% ± 0.14%</td>
+                    <td class="performance-high">81.26% ± 1.06%</td>
+                    <td class="performance-high">81.77% ± 0.49%</td>
+                </tr>
+                
+                <!-- CINIC10 Dataset -->
+                <tr>
+                    <td rowspan="4" class="dataset-cell">CINIC10</td>
+                    <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
+                    <td class="performance-medium">36.41% ± 0.18%</td>
+                    <td class="performance-medium">36.24% ± 0.3%</td>
+                    <td class="performance-low">19.16% ± 0.32%</td>
+                    <td class="performance-medium">36.59% ± 0.69%</td>
+                    <td class="performance-medium">30.24% ± 1.90%</td>
+                    <td class="performance-medium">35.65% ± 0.27%</td>
+                    <td class="performance-medium">30.57% ± 1.46%</td>
+                    <td class="best-result performance-medium">36.93% ± 0.94%</td>
+                    <td class="performance-medium">36.24% ± 0.23%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 1</span></td>
+                    <td class="performance-low">9.64% ± 0.54%</td>
+                    <td class="performance-low">9.46% ± 0.77%</td>
+                    <td class="best-result performance-low">11.17% ± 1.51%</td>
+                    <td class="performance-low">10% ± 0.0%</td>
+                    <td class="performance-low">10% ± 0.0%</td>
+                    <td class="performance-low">9.93% ± 0.33%</td>
+                    <td class="performance-low">10% ± 0.0%</td>
+                    <td class="performance-low">10% ± 0.0%</td>
+                    <td class="performance-low">10% ± 0.0%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 2</span></td>
+                    <td class="performance-low">25.34% ± 1.33%</td>
+                    <td class="best-result performance-low">28.15% ± 1.2%</td>
+                    <td class="performance-low">16.47% ± 1.53%</td>
+                    <td class="performance-low">26.08% ± 1.31%</td>
+                    <td class="performance-low">13.58% ± 5.06%</td>
+                    <td class="performance-low">26.58% ± 0.92%</td>
+                    <td class="performance-low">13.58% ± 5.06%</td>
+                    <td class="performance-low">25.41% ± 0.68%</td>
+                    <td class="performance-low">27.55% ± 0.79%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 3</span></td>
+                    <td class="performance-medium">32.91% ± 0.44%</td>
+                    <td class="performance-medium">32.75% ± 0.42%</td>
+                    <td class="performance-low">15.46% ± 1.17%</td>
+                    <td class="performance-medium">32.99% ± 0.41%</td>
+                    <td class="performance-low">19% ± 6.36%</td>
+                    <td class="performance-medium">30.01% ± 0.91%</td>
+                    <td class="performance-low">18.66% ± 6.13%</td>
+                    <td class="best-result performance-medium">33.32% ± 0.86%</td>
+                    <td class="performance-medium">33.08% ± 0.23%</td>
+                </tr>
+                
+                <!-- CIFAR10 Dataset -->
+                <tr>
+                    <td rowspan="4" class="dataset-cell">CIFAR10</td>
+                    <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
+                    <td class="best-result performance-medium">65.61% ± 1.52%</td>
+                    <td class="performance-medium">64.16% ± 0.25%</td>
+                    <td class="performance-low">25.74% ± 1.65%</td>
+                    <td class="performance-medium">64.66% ± 1.05%</td>
+                    <td class="performance-medium">60.62% ± 0.84%</td>
+                    <td class="performance-medium">59.41% ± 0.4%</td>
+                    <td class="performance-medium">38.95% ± 5.79%</td>
+                    <td class="performance-medium">64.69% ± 0.82%</td>
+                    <td class="performance-medium">63.43% ± 0.102%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 1</span></td>
+                    <td class="performance-low">9.64% ± 0.54%</td>
+                    <td class="performance-low">9.46% ± 0.77%</td>
+                    <td class="performance-low">10.11% ± 0.34%</td>
+                    <td class="performance-low">11.66% ± 2.9%</td>
+                    <td class="performance-low">19.4% ± 0.11%</td>
+                    <td class="best-result performance-low">22.79% ± 3.63%</td>
+                    <td class="performance-low">10% ± 0.0%</td>
+                    <td class="performance-low">10% ± 0.0%</td>
+                    <td class="performance-low">11.20% ± 1.43%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 2</span></td>
+                    <td class="performance-medium">47.83% ± 3.29%</td>
+                    <td class="best-result performance-medium">49.82% ± 0.66%</td>
+                    <td class="performance-low">17.44% ± 1.79%</td>
+                    <td class="performance-medium">46.27% ± 2.21%</td>
+                    <td class="performance-medium">46.63% ± 0.97%</td>
+                    <td class="performance-medium">47.38% ± 1.41%</td>
+                    <td class="performance-low">10% ± 0.0%</td>
+                    <td class="performance-medium">42.23% ± 1.0%</td>
+                    <td class="performance-medium">48.36% ± 1.50%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 3</span></td>
+                    <td class="performance-medium">62.65% ± 1.49%</td>
+                    <td class="best-result performance-medium">63.57% ± 0.2%</td>
+                    <td class="performance-low">20.11% ± 2.02%</td>
+                    <td class="performance-medium">61.7% ± 1.51%</td>
+                    <td class="performance-medium">59.9% ± 1.06%</td>
+                    <td class="performance-medium">59.02% ± 0.34%</td>
+                    <td class="performance-medium">38.34% ± 3.52%</td>
+                    <td class="performance-medium">61.21% ± 0.74%</td>
+                    <td class="performance-medium">61.93% ± 0.89%</td>
+                </tr>
+                
+                <!-- FedISIC2019 Dataset -->
+                <tr>
+                    <td rowspan="4" class="dataset-cell">FedISIC2019</td>
+                    <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
+                    <td class="best-result performance-medium">56.46% ± 0.30%</td>
+                    <td class="performance-medium">56.23% ± 0.49%</td>
+                    <td class="performance-low">28.30% ± 14.09%</td>
+                    <td class="performance-medium">33.61% ± 0.55%</td>
+                    <td class="performance-medium">53.80% ± 0.60%</td>
+                    <td class="performance-medium">54.14% ± 0.38%</td>
+                    <td class="performance-medium">48.27% ± 0.07%</td>
+                    <td class="performance-medium">55.90% ± 0.29%</td>
+                    <td class="performance-medium">56.24% ± 0.55%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 1</span></td>
+                    <td class="performance-low">18.34% ± 0.0%</td>
+                    <td class="performance-low">28.3% ± 14.09%</td>
+                    <td class="performance-medium">48.22% ± 0.0%</td>
+                    <td class="performance-low">22.56% ± 19.46%</td>
+                    <td class="best-result performance-medium">48.55% ± 0.47%</td>
+                    <td class="performance-medium">48.22% ± 0.0%</td>
+                    <td class="performance-medium">48.22% ± 0.0%</td>
+                    <td class="performance-medium">37.02% ± 15.93%</td>
+                    <td class="performance-low">27.02% ± 15.08%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 2</span></td>
+                    <td class="performance-medium">40.09% ± 5.30%</td>
+                    <td class="performance-medium">38.52% ± 14.27%</td>
+                    <td class="performance-medium">48.22% ± 0.0%</td>
+                    <td class="performance-low">28.95% ± 14.39%</td>
+                    <td class="best-result performance-medium">52.18% ± 0.87%</td>
+                    <td class="performance-medium">51.84% ± 0.53%</td>
+                    <td class="performance-medium">48.22% ± 0.0%</td>
+                    <td class="performance-medium">48.43% ± 1.16%</td>
+                    <td class="performance-medium">48.10% ± 1.58%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 3</span></td>
+                    <td class="performance-medium">47.93% ± 1.71%</td>
+                    <td class="performance-medium">48.02% ± 2.41%</td>
+                    <td class="performance-medium">48.22% ± 0.0%</td>
+                    <td class="performance-medium">40.68% ± 4.82%</td>
+                    <td class="best-result performance-medium">52.25% ± 0.81%</td>
+                    <td class="performance-medium">51.92% ± 1.13%</td>
+                    <td class="performance-medium">38.26% ± 14.09%</td>
+                    <td class="performance-medium">50.52% ± 2.15%</td>
+                    <td class="performance-medium">49.18% ± 0.26%</td>
+                </tr>
+                
+                <!-- Adult Dataset -->
+                <tr>
+                    <td rowspan="2" class="dataset-cell">Adult</td>
+                    <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
+                    <td class="performance-high">81.73% ± 2.62%</td>
+                    <td class="performance-high">83.48% ± 2.17%</td>
+                    <td class="performance-high">76.49% ± 0.0%</td>
+                    <td class="performance-medium">69.07% ± 2.05%</td>
+                    <td class="performance-high">83.64% ± 1.71%</td>
+                    <td class="performance-high">83.31% ± 1.29%</td>
+                    <td class="performance-high">82.98% ± 0.92%</td>
+                    <td class="performance-high">82.39% ± 2.40%</td>
+                    <td class="best-result performance-high">84.39% ± 0.49%</td>
+                </tr>
+                <tr>
+                    <td><span class="math-formula">#C = 1</span></td>
+                    <td class="performance-high">80.21% ± 3.35%</td>
+                    <td class="performance-high">81.06% ± 2.98%</td>
+                    <td class="performance-high">76.49% ± 0.0%</td>
+                    <td class="performance-medium">54.08% ± 0.29%</td>
+                    <td class="best-result performance-high">85.03% ± 0.23%</td>
+                    <td class="performance-high">84.03% ± 1.48%</td>
+                    <td class="performance-high">84.70% ± 0.57%</td>
+                    <td class="performance-high">77.88% ± 4.82%</td>
+                    <td class="performance-high">79.22% ± 5.57%</td>
+                </tr>
+                
+                <!-- Summary row -->
+                <tr style="background-color: #f0f8ff; font-weight: bold;">
+                    <td colspan="3" style="text-align: center; padding: 15px;">Number of times that performs the best</td>
+                    <td style="background-color: #e1f5fe;">3</td>
+                    <td style="background-color: #e8f5e8;">4</td>
+                    <td style="background-color: #fff3e0;">2</td>
+                    <td style="background-color: #fce4ec;">1</td>
+                    <td style="background-color: #e8f5e8; font-size: 16px;">8</td>
+                    <td style="background-color: #e8f5e8;">4</td>
+                    <td style="background-color: #fff3e0;">2</td>
+                    <td style="background-color: #fff3e0;">2</td>
+                    <td style="background-color: #fce4ec;">1</td>
+                </tr>
+        
+              <!-- Section separator -->
               <tr>
-                <td rowspan="26" class="label-skew">Label distribution skew</td>
-                <td rowspan="4" class="dataset-cell">MNIST</td>
-                <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
-                <td>98.85% ± 0.05%</td><td>98.91% ± 0.03%</td><td>61.99% ± 1.4%</td><td><b>98.97% ± 0.03%</b></td>
-                <td>98.81% ± 0.04%</td><td>98.86% ± 0.06%</td><td>98.46% ± 0.02%</td><td>98.80% ± 0.08%</td><td>98.91% ± 0.02%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 1</span></td>
-                <td>40.34% ± 26.51%</td><td>40.24% ± 21.8%</td><td>10.99% ± 0.5%</td><td>54.66% ± 9.53%</td>
-                <td><b>68.85% ± 9.5%</b></td><td>34.20% ± 15.34%</td><td>18.86% ± 12.77%</td><td>9.92% ± 0.24%</td><td>60.73% ± 7.55%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 2</span></td>
-                <td>97.53% ± 0.07%</td><td>97.42% ± 0.12%</td><td>21.81% ± 1.92%</td><td>97.37% ± 0.31%</td>
-                <td>95.92% ± 0.37%</td><td><b>97.78% ± 0.22%</b></td><td>61.91% ± 36.65%</td><td>55.75% ± 32.89%</td><td>97.50% ± 0.26%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 3</span></td>
-                <td>98.53% ± 0.16%</td><td>98.65% ± 0.15%</td><td>29.95% ± 0.15%</td><td>98.43% ± 0.15%</td>
-                <td>98.22% ± 0.07%</td><td><b>98.69% ± 0.11%</b></td><td>95.8% ± 1.82%</td><td>95.06% ± 1.60%</td><td>98.56% ± 0.11%</td>
+                <td colspan="12" class="section-header"></td>
               </tr>
         
-              <tr>
-                <td rowspan="4" class="dataset-cell">FMNIST</td>
-                <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
-                <td>86.88% ± 0.38%</td><td><b>87.16% ± 0.18%</b></td><td>48.80% ± 1.36%</td><td>87.12% ± 0.32%</td>
-                <td>86.39% ± 0.19%</td><td>86.44% ± 0.15%</td><td>84.46% ± 1.72%</td><td>87.15% ± 0.38%</td><td>87.01% ± 0.28%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 1</span></td>
-                <td>15.88% ± 4.6%</td><td>28.39% ± 16.68%</td><td>10% ± 0.0%</td><td>20.28% ± 14.53%</td>
-                <td><b>37% ± 4.9%</b></td><td>25.35% ± 10.93%</td><td>10% ± 0.0%</td><td>10% ± 0.0%</td><td>21.13% ± 10.30%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 2</span></td>
-                <td>79.3% ± 2.37%</td><td>78.33% ± 0.7%</td><td>22.85% ± 2.60%</td><td>75.76% ± 3.94%</td>
-                <td>78.11% ± 1.03%</td><td><b>81.97% ± 0.78%</b></td><td>63.14% ± 15.59%</td><td>67.77% ± 2.61%</td><td>79.09% ± 1.18%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 3</span></td>
-                <td><b>83.67% ± 0.55%</b></td><td>83.62% ± 0.85%</td><td>25.56% ± 0.16%</td><td>83.51% ± 0.67%</td>
-                <td>83.52% ± 0.68%</td><td>83.42% ± 0.13%</td><td>79.62% ± 0.72%</td><td>74.57% ± 3.46%</td><td>83.56% ± 0.76%</td>
-              </tr>
-        
-              <tr>
-                <td rowspan="4" class="dataset-cell">SVHN</td>
-                <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
-                <td>86.44% ± 0.31%</td><td>86.48% ± 0.1%</td><td>51.74% ± 1.20%</td><td>86.48% ± 0.13%</td>
-                <td><b>86.7% ± 0.35%</b></td><td>85.34% ± 0.21%</td><td><b>86.7% ± 0.35%</b></td><td>86.15% ± 0.46%</td><td>86.45% ± 0.51%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 1</span></td>
-                <td>14.32% ± 2.3%</td><td>13.27% ± 4.53%</td><td><b>19.59% ± 0.0%</b></td><td>9.15% ± 1.82%</td>
-                <td>18.37% ± 1.72%</td><td>18.37% ± 1.72%</td><td>15.65% ± 5.58%</td><td>12.49% ± 3.03%</td><td>12.69% ± 2.30%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 2</span></td>
-                <td>77.49% ± 1.34%</td><td><b>79.28% ± 0.17%</b></td><td>24.55% ± 0.86%</td><td>72.41% ± 2.15%</td>
-                <td>76.37% ± 1.18%</td><td>79.03% ± 0.26%</td><td>57.99% ± 27.15%</td><td>74.41% ± 1.76%</td><td>76.27% ± 2.53%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 3</span></td>
-                <td>81.71% ± 1.08%</td><td>82.11% ± 1.14%</td><td>31.11% ± 0.51%</td><td>81.59% ± 0.91%</td>
-                <td><b>82.43% ± 0.14%</b></td><td>81.27% ± 0.64%</td><td><b>82.43% ± 0.14%</b></td><td>81.26% ± 1.06%</td><td>81.77% ± 0.49%</td>
-              </tr>
-        
-              <tr>
-                <td rowspan="4" class="dataset-cell">CINIC10</td>
-                <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
-                <td>36.41% ± 0.18%</td><td>36.24% ± 0.3%</td><td>19.16% ± 0.32%</td><td>36.59% ± 0.69%</td>
-                <td>30.24% ± 1.90%</td><td>35.65% ± 0.27%</td><td>30.57% ± 1.46%</td><td><b>36.93% ± 0.94%</b></td><td>36.24% ± 0.23%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 1</span></td>
-                <td>9.64% ± 0.54%</td><td>9.46% ± 0.77%</td><td><b>11.17% ± 1.51%</b></td><td>10% ± 0.0%</td>
-                <td>10% ± 0.0%</td><td>9.93% ± 0.33%</td><td>10% ± 0.0%</td><td>10% ± 0.0%</td><td>10% ± 0.0%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 2</span></td>
-                <td>25.34% ± 1.33%</td><td><b>28.15% ± 1.2%</b></td><td>16.47% ± 1.53%</td><td>26.08% ± 1.31%</td>
-                <td>13.58% ± 5.06%</td><td>26.58% ± 0.92%</td><td>13.58% ± 5.06%</td><td>25.41% ± 0.68%</td><td>27.55% ± 0.79%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 3</span></td>
-                <td>32.91% ± 0.44%</td><td>32.75% ± 0.42%</td><td>15.46% ± 1.17%</td><td>32.99% ± 0.41%</td>
-                <td>19% ± 6.36%</td><td>30.01% ± 0.91%</td><td>18.66% ± 6.13%</td><td><b>33.32% ± 0.86%</b></td><td>33.08% ± 0.23%</td>
-              </tr>
-        
-              <tr>
-                <td rowspan="4" class="dataset-cell">CIFAR10</td>
-                <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
-                <td><b>65.61% ± 1.52%</b></td><td>64.16% ± 0.25%</td><td>25.74% ± 1.65%</td><td>64.66% ± 1.05%</td>
-                <td>60.62% ± 0.84%</td><td>59.41% ± 0.4%</td><td>38.95% ± 5.79%</td><td>64.69% ± 0.82%</td><td>63.43% ± 0.102%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 1</span></td>
-                <td>9.64% ± 0.54%</td><td>9.46% ± 0.77%</td><td>10.11% ± 0.34%</td><td>11.66% ± 2.9%</td>
-                <td>19.4% ± 0.11%</td><td><b>22.79% ± 3.63%</b></td><td>10% ± 0.0%</td><td>10% ± 0.0%</td><td>11.20% ± 1.43%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 2</span></td>
-                <td>47.83% ± 3.29%</td><td><b>49.82% ± 0.66%</b></td><td>17.44% ± 1.79%</td><td>46.27% ± 2.21%</td>
-                <td>46.63% ± 0.97%</td><td>47.38% ± 1.41%</td><td>10% ± 0.0%</td><td>42.23% ± 1.0%</td><td>48.36% ± 1.50%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 3</span></td>
-                <td>62.65% ± 1.49%</td><td><b>63.57% ± 0.2%</b></td><td>20.11% ± 2.02%</td><td>61.7% ± 1.51%</td>
-                <td>59.9% ± 1.06%</td><td>59.02% ± 0.34%</td><td>38.34% ± 3.52%</td><td>61.21% ± 0.74%</td><td>61.93% ± 0.89%</td>
-              </tr>
-        
-              <tr>
-                <td rowspan="4" class="dataset-cell">FedISIC2019</td>
-                <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
-                <td><b>56.46% ± 0.30%</b></td><td>56.23% ± 0.49%</td><td>28.30% ± 14.09%</td><td>33.61% ± 0.55%</td>
-                <td>53.80% ± 0.60%</td><td>54.14% ± 0.38%</td><td>48.27% ± 0.07%</td><td>55.90% ± 0.29%</td><td>56.24% ± 0.55%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 1</span></td>
-                <td>18.34% ± 0.0%</td><td>28.3% ± 14.09%</td><td>48.22% ± 0.0%</td><td>22.56% ± 19.46%</td>
-                <td><b>48.55% ± 0.47%</b></td><td>48.22% ± 0.0%</td><td>48.22% ± 0.0%</td><td>37.02% ± 15.93%</td><td>27.02% ± 15.08%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 2</span></td>
-                <td>40.09% ± 5.30%</td><td>38.52% ± 14.27%</td><td>48.22% ± 0.0%</td><td>28.95% ± 14.39%</td>
-                <td><b>52.18% ± 0.87%</b></td><td>51.84% ± 0.53%</td><td>48.22% ± 0.0%</td><td>48.43% ± 1.16%</td><td>48.10% ± 1.58%</td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 3</span></td>
-                <td>47.93% ± 1.71%</td><td>48.02% ± 2.41%</td><td>48.22% ± 0.0%</td><td>40.68% ± 4.82%</td>
-                <td><b>52.25% ± 0.81%</b></td><td>51.92% ± 1.13%</td><td>38.26% ± 14.09%</td><td>50.52% ± 2.15%</td><td>49.18% ± 0.26%</td>
-              </tr>
-        
-              <tr>
-                <td rowspan="2" class="dataset-cell">Adult</td>
-                <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
-                <td>81.73% ± 2.62%</td><td>83.48% ± 2.17%</td><td>76.49% ± 0.0%</td><td>69.07% ± 2.05%</td>
-                <td>83.64% ± 1.71%</td><td>83.31% ± 1.29%</td><td>82.98% ± 0.92%</td><td>82.39% ± 2.40%</td><td><b>84.39% ± 0.49%</b></td>
-              </tr>
-              <tr>
-                <td><span class="math-formula">#C = 1</span></td>
-                <td>80.21% ± 3.35%</td><td>81.06% ± 2.98%</td><td>76.49% ± 0.0%</td><td>54.08% ± 0.29%</td>
-                <td><b>85.03% ± 0.23%</b></td><td>84.03% ± 1.48%</td><td>84.70% ± 0.57%</td><td>77.88% ± 4.82%</td><td>79.22% ± 5.57%</td>
-              </tr>
+               <!-- Feature distribution skew -->
+                <tr>
+                    <td rowspan="7" class="feature-skew">Feature distribution skew</td>
+                    <td class="dataset-cell">MNIST</td>
+                    <td rowspan="6"><span class="math-formula">x̂ ~ Gau(0.1)</span></td>
+                    <td class="performance-high">99.23% ± 0.07%</td>
+                    <td class="performance-high">99.26% ± 0.06%</td>
+                    <td class="performance-high">98.19% ± 0.12%</td>
+                    <td class="performance-high">99.24% ± 0.03%</td>
+                    <td class="best-result performance-high">99.28% ± 0.07%</td>
+                    <td class="performance-high">99.22% ± 0.06%</td>
+                    <td class="performance-high">99.05% ± 0.09%</td>
+                    <td class="performance-high">99.24% ± 0.02%</td>
+                    <td class="best-result performance-high">99.28% ± 0.02%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">FMNIST</td>
+                    <td class="performance-medium">84.35% ± 0.13%</td>
+                    <td class="performance-medium">84.65% ± 0.30%</td>
+                    <td class="performance-low">72.68% ± 0.44%</td>
+                    <td class="performance-medium">84.43% ± 0.03%</td>
+                    <td class="performance-medium">83.99% ± 0.25%</td>
+                    <td class="performance-medium">84.57% ± 0.26%</td>
+                    <td class="performance-medium">82.64% ± 0.51%</td>
+                    <td class="performance-medium">84.57% ± 0.12%</td>
+                    <td class="best-result performance-medium">84.72% ± 0.14%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">SVHN</td>
+                    <td class="performance-medium">68.85% ± 0.67%</td>
+                    <td class="performance-medium">69.39% ± 0.40%</td>
+                    <td class="performance-medium">70.25% ± 0.41%</td>
+                    <td class="performance-medium">69.75% ± 1.20%</td>
+                    <td class="best-result performance-medium">73.14% ± 1.03%</td>
+                    <td class="performance-medium">72.8% ± 0.56%</td>
+                    <td class="performance-medium">70.09% ± 0.92%</td>
+                    <td class="performance-medium">70.09% ± 0.73%</td>
+                    <td class="performance-medium">69.27% ± 1.75%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">CINIC10</td>
+                    <td class="best-result performance-low">35.66% ± 1.05%</td>
+                    <td class="performance-low">34.51% ± 1.01%</td>
+                    <td class="performance-low">31.97% ± 0.95%</td>
+                    <td class="performance-low">33.84% ± 0.70%</td>
+                    <td class="performance-low">23.10% ± 9.29%</td>
+                    <td class="performance-low">35.44% ± 0.73%</td>
+                    <td class="performance-low">23.44% ± 9.50%</td>
+                    <td class="performance-low">34.18% ± 0.5%</td>
+                    <td class="performance-low">33.82% ± 0.88%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">CIFAR10</td>
+                    <td class="performance-medium">64.02% ± 0.08%</td>
+                    <td class="performance-medium">63.59% ± 0.09%</td>
+                    <td class="performance-low">47.04% ± 1.01%</td>
+                    <td class="performance-medium">63.16% ± 1.13%</td>
+                    <td class="performance-medium">63.48% ± 0.88%</td>
+                    <td class="performance-medium">63.36% ± 0.42%</td>
+                    <td class="performance-medium">51.72% ± 0.75%</td>
+                    <td class="best-result performance-medium">64.93% ± 0.34%</td>
+                    <td class="performance-medium">63.8% ± 0.56%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">FedISIC2019</td>
+                    <td class="performance-medium">54.75% ± 0.56%</td>
+                    <td class="performance-medium">55.11% ± 0.12%</td>
+                    <td class="performance-low">49.56% ± 0.68%</td>
+                    <td class="performance-medium">54.78% ± 0.04%</td>
+                    <td class="performance-medium">52.36% ± 0.52%</td>
+                    <td class="performance-medium">52.7% ± 0.99%</td>
+                    <td class="performance-low">48.87% ± 0.88%</td>
+                    <td class="performance-medium">54.96% ± 0.86%</td>
+                    <td class="best-result performance-medium">55.3% ± 0.46%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">FCUBE</td>
+                    <td><span class="math-formula">synthetic</span></td>
+                    <td class="performance-high">99.57% ± 0.05%</td>
+                    <td class="performance-high">99.67% ± 0.12%</td>
+                    <td class="performance-high">97.07% ± 1.28%</td>
+                    <td class="best-result performance-high">99.87% ± 0.12%</td>
+                    <td class="performance-high">99.53% ± 0.12%</td>
+                    <td class="performance-high">99.67% ± 0.12%</td>
+                    <td class="performance-high">99.67% ± 0.12%</td>
+                    <td class="performance-high">99.7% ± 0.14%</td>
+                    <td class="performance-high">99.67% ± 0.09%</td>
+                </tr>
         
               <!-- Summary row -->
               <tr>
                 <td colspan="3" style="text-align: center; font-weight: bold;">Number of times that performs the best</td>
-                <td>3</td><td>4</td><td>2</td><td>1</td><td>8</td><td>4</td><td>2</td><td>2</td><td>1</td>
+                  <td style="background-color: #fce4ec;">1</td>
+                    <td style="background-color: #fce4ec;">0</td>
+                      <td style="background-color: #fce4ec;">0</td>
+                        <td style="background-color: #fce4ec;">1</td>
+                        <td style="background-color: #fff3e0;">2</td> 
+                        <td style="background-color: #fce4ec;">0</td>  
+                        <td style="background-color: #fce4ec;">0</td>  
+                        <td style="background-color: #fce4ec;">1</td>
+                       <td style="background-color: #e1f5fe;">3</td>
               </tr>
         
               <!-- Section separator -->
@@ -1046,100 +1151,106 @@ table.GeneratedTable thead {
                 <td colspan="12" class="section-header"></td>
               </tr>
         
-              <!-- Feature Distribution Skew -->
-              <tr>
-                <td rowspan="7" class="feature-skew">Feature distribution skew</td>
-                <td class="dataset-cell">MNIST</td>
-                <td rowspan="6"><span class="math-formula">x̂ ~ Gau(0.1)</span></td>
-                <td>99.23% ± 0.07%</td><td>99.26% ± 0.06%</td><td>98.19% ± 0.12%</td><td>99.24% ± 0.03%</td>
-                <td><b>99.28% ± 0.07%</b></td><td>99.22% ± 0.06%</td><td>99.05% ± 0.09%</td><td>99.24% ± 0.02%</td><td><b>99.28% ± 0.02%</b></td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">FMNIST</td>
-                <td>84.35% ± 0.13%</td><td>84.65% ± 0.30%</td><td>72.68% ± 0.44%</td><td>84.43% ± 0.03%</td>
-                <td>83.99% ± 0.25%</td><td>84.57% ± 0.26%</td><td>82.64% ± 0.51%</td><td>84.57% ± 0.12%</td><td><b>84.72% ± 0.14%</b></td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">SVHN</td>
-                <td>68.85% ± 0.67%</td><td>69.39% ± 0.40%</td><td>70.25% ± 0.41%</td><td>69.75% ± 1.20%</td>
-                <td><b>73.14% ± 1.03%</b></td><td>72.8% ± 0.56%</td><td>70.09% ± 0.92%</td><td>70.09% ± 0.73%</td><td>69.27% ± 1.75%</td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">CINIC10</td>
-                <td><b>35.66% ± 1.05%</b></td><td>34.51% ± 1.01%</td><td>31.97% ± 0.95%</td><td>33.84% ± 0.70%</td>
-                <td>23.10% ± 9.29%</td><td>35.44% ± 0.73%</td><td>23.44% ± 9.50%</td><td>34.18% ± 0.5%</td><td>33.82% ± 0.88%</td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">CIFAR10</td>
-                <td>64.02% ± 0.08%</td><td>63.59% ± 0.09%</td><td>47.04% ± 1.01%</td><td>63.16% ± 1.13%</td>
-                <td>63.48% ± 0.88%</td><td>63.36% ± 0.42%</td><td>51.72% ± 0.75%</td><td><b>64.93% ± 0.34%</b></td><td>63.8% ± 0.56%</td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">FedISIC2019</td>
-                <td>54.75% ± 0.56%</td><td>55.11% ± 0.12%</td><td>49.56% ± 0.68%</td><td>54.78% ± 0.04%</td>
-                <td>52.36% ± 0.52%</td><td>52.7% ± 0.99%</td><td>48.87% ± 0.88%</td><td>54.96% ± 0.86%</td><td><b>55.3% ± 0.46%</b></td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">FCUBE</td>
-                <td><span class="math-formula">synthetic</span></td>
-                <td>99.57% ± 0.05%</td><td>99.67% ± 0.12%</td><td>97.07% ± 1.28%</td><td><b>99.87% ± 0.12%</b></td>
-                <td>99.53% ± 0.12%</td><td>99.67% ± 0.12%</td><td>99.67% ± 0.12%</td><td>99.7% ± 0.14%</td><td>99.67% ± 0.09%</td>
-              </tr>
+               <!-- Quantity Skew -->
+                <tr>
+                    <td rowspan="7" class="quantity-skew">Quantity skew</td>
+                    <td class="dataset-cell">MNIST</td>
+                    <td rowspan="7"><span class="math-formula">q ~ Dir(0.5)</span></td>
+                    <td class="performance-high">99.02% ± 0.05%</td>
+                    <td class="performance-high">99.01% ± 0.07%</td>
+                    <td class="performance-high">97.3% ± 0.02%</td>
+                    <td class="performance-high">98.95% ± 0.05%</td>
+                    <td class="best-result performance-high">99.08% ± 0.04%</td>
+                    <td class="performance-high">98.89% ± 0.05%</td>
+                    <td class="performance-high">98.61% ± 0.07%</td>
+                    <td class="performance-high">99.07% ± 0.06%</td>
+                    <td class="best-result performance-high">99.08% ± 0.06%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">FMNIST</td>
+                    <td class="performance-medium">88.80% ± 0.05%</td>
+                    <td class="performance-medium">88.46% ± 0.31%</td>
+                    <td class="performance-medium">80.53% ± 0.8%</td>
+                    <td class="performance-medium">88.99% ± 0.11%</td>
+                    <td class="performance-medium">88.95% ± 0.35%</td>
+                    <td class="performance-medium">88.75% ± 0.05%</td>
+                    <td class="performance-medium">86.41% ± 0.16%</td>
+                    <td class="best-result performance-medium">89.09% ± 0.17%</td>
+                    <td class="performance-medium">88.08% ± 0.0%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">SVHN</td>
+                    <td class="performance-medium">87.38% ± 1.27%</td>
+                    <td class="performance-medium">87.99% ± 0.38%</td>
+                    <td class="performance-medium">77.08% ± 0.97%</td>
+                    <td class="performance-medium">87.52% ± 0.44%</td>
+                    <td class="best-result performance-medium">88.80% ± 0.06%</td>
+                    <td class="performance-medium">87.44% ± 0.05%</td>
+                    <td class="performance-medium">85.08% ± 0.28%</td>
+                    <td class="performance-medium">87.85% ± 0.82%</td>
+                    <td class="performance-medium">87.94% ± 0.13%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">CINIC10</td>
+                    <td class="performance-low">38.73% ± 0.55%</td>
+                    <td class="performance-low">38.56% ± 0.39%</td>
+                    <td class="performance-low">37.61% ± 0.40%</td>
+                    <td class="performance-low">38.55% ± 0.29%</td>
+                    <td class="performance-low">26.96% ± 12.0%</td>
+                    <td class="performance-low">39.23% ± 0.48%</td>
+                    <td class="performance-low">26.63% ± 11.76%</td>
+                    <td class="performance-low">38.22% ± 0.67%</td>
+                    <td class="best-result performance-low">39.73% ± 0.45%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">CIFAR10</td>
+                    <td class="performance-medium">71.13% ± 0.37%</td>
+                    <td class="performance-medium">71.01% ± 0.39%</td>
+                    <td class="performance-low">46.14% ± 0.07%</td>
+                    <td class="best-result performance-medium">71.72% ± 0.58%</td>
+                    <td class="performance-medium">69.40% ± 0.38%</td>
+                    <td class="performance-medium">68.24% ± 0.68%</td>
+                    <td class="performance-low">25.90% ± 22.49%</td>
+                    <td class="performance-medium">71.6% ± 0.44%</td>
+                    <td class="performance-medium">71.23% ± 0.52%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">FedISIC2019</td>
+                    <td class="performance-medium">57.73% ± 0.29%</td>
+                    <td class="performance-medium">58.14% ± 0.55%</td>
+                    <td class="performance-low">49.96% ± 0.75%</td>
+                    <td class="performance-medium">57.04% ± 0.53%</td>
+                    <td class="performance-medium">56.18% ± 0.63%</td>
+                    <td class="performance-medium">56.52% ± 0.18%</td>
+                    <td class="performance-low">48.66% ± 0.63%</td>
+                    <td class="best-result performance-medium">58.51% ± 0.66%</td>
+                    <td class="performance-medium">57.93% ± 0.2%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">Adult</td>
+                    <td class="performance-medium">84.26% ± 0.04%</td>
+                    <td class="performance-medium">84.48% ± 0.23%</td>
+                    <td class="best-result performance-medium">85.55% ± 0.05%</td>
+                    <td class="performance-medium">83.98% ± 0.22%</td>
+                    <td class="performance-medium">83.83% ± 0.48%</td>
+                    <td class="performance-medium">83.5% ± 0.83%</td>
+                    <td class="performance-medium">83.83% ± 0.48%</td>
+                    <td class="performance-medium">83.6% ± 0.82%</td>
+                    <td class="performance-medium">83.93% ± 0.41%</td>
+                </tr>
         
               <!-- Summary row -->
               <tr>
                 <td colspan="3" style="text-align: center; font-weight: bold;">Number of times that performs the best</td>
-                <td>1</td><td>0</td><td>0</td><td>1</td><td>2</td><td>0</td><td>0</td><td>1</td><td>3</td>
-              </tr>
-        
-              <!-- Section separator -->
-              <tr>
-                <td colspan="12" class="section-header"></td>
-              </tr>
-        
-              <!-- Quantity Skew -->
-              <tr>
-                <td rowspan="7" class="quantity-skew">Quantity skew</td>
-                <td class="dataset-cell">MNIST</td>
-                <td rowspan="7"><span class="math-formula">q ~ Dir(0.5)</span></td>
-                <td>99.02% ± 0.05%</td><td>99.01% ± 0.07%</td><td>97.3% ± 0.02%</td><td>98.95% ± 0.05%</td>
-                <td><b>99.08% ± 0.04%</b></td><td>98.89% ± 0.05%</td><td>98.61% ± 0.07%</td><td>99.07% ± 0.06%</td><td><b>99.08% ± 0.06%</b></td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">FMNIST</td>
-                <td>88.80% ± 0.05%</td><td>88.46% ± 0.31%</td><td>80.53% ± 0.8%</td><td>88.99% ± 0.11%</td>
-                <td>88.95% ± 0.35%</td><td>88.75% ± 0.05%</td><td>86.41% ± 0.16%</td><td><b>89.09% ± 0.17%</b></td><td>88.08% ± 0.0%</td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">SVHN</td>
-                <td>87.38% ± 1.27%</td><td>87.99% ± 0.38%</td><td>77.08% ± 0.97%</td><td>87.52% ± 0.44%</td>
-                <td><b>88.80% ± 0.06%</b></td><td>87.44% ± 0.05%</td><td>85.08% ± 0.28%</td><td>87.85% ± 0.82%</td><td>87.94% ± 0.13%</td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">CINIC10</td>
-                <td>38.73% ± 0.55%</td><td>38.56% ± 0.39%</td><td>37.61% ± 0.40%</td><td>38.55% ± 0.29%</td>
-                <td>26.96% ± 12.0%</td><td>39.23% ± 0.48%</td><td>26.63% ± 11.76%</td><td>38.22% ± 0.67%</td><td><b>39.73% ± 0.45%</b></td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">CIFAR10</td>
-                <td>71.13% ± 0.37%</td><td>71.01% ± 0.39%</td><td>46.14% ± 0.07%</td><td><b>71.72% ± 0.58%</b></td>
-                <td>69.40% ± 0.38%</td><td>68.24% ± 0.68%</td><td>25.90% ± 22.49%</td><td>71.6% ± 0.44%</td><td>71.23% ± 0.52%</td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">FedISIC2019</td>
-                <td>57.73% ± 0.29%</td><td>58.14% ± 0.55%</td><td>49.96% ± 0.75%</td><td>57.04% ± 0.53%</td>
-                <td>56.18% ± 0.63%</td><td>56.52% ± 0.18%</td><td>48.66% ± 0.63%</td><td><b>58.51% ± 0.66%</b></td><td>57.93% ± 0.2%</td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">Adult</td>
-                <td>84.26% ± 0.04%</td><td>84.48% ± 0.23%</td><td><b>85.55% ± 0.05%</b></td><td>83.98% ± 0.22%</td>
-                <td>83.83% ± 0.48%</td><td>83.5% ± 0.83%</td><td>83.83% ± 0.48%</td><td>83.6% ± 0.82%</td><td>83.93% ± 0.41%</td>
-              </tr>
-        
-              <!-- Summary row -->
-              <tr>
-                <td colspan="3" style="text-align: center; font-weight: bold;">Number of times that performs the best</td>
-                <td>0</td><td>0</td><td>1</td><td>1</td><td>2</td><td>0</td><td>0</td><td>2</td><td>2</td>
+                <td style="background-color: #fce4ec;">0</td>
+                <td style="background-color: #fce4ec;">0</td>
+                <td style="background-color: #fce4ec;">1</td>
+                <td style="background-color: #fce4ec;">1</td>
+                <td style="background-color: #fff3e0;">2</td>
+                <td style="background-color: #fce4ec;">0</td>
+                <td style="background-color: #fce4ec;">0</td>
+                <td style="background-color: #fff3e0;">2</td>
+               <td style="background-color: #fff3e0;">2</td>
               </tr>
         
               <!-- Section separator -->
@@ -1148,52 +1259,115 @@ table.GeneratedTable thead {
               </tr>
         
               <!-- Homogeneous Partition -->
-              <tr>
-                <td rowspan="7" class="homogeneous">Homogeneous partition</td>
-                <td class="dataset-cell">MNIST</td>
-                <td rowspan="7"><span class="math-formula">IID</span></td>
-                <td>99.11% ± 0.05%</td><td>99.10% ± 0.01%</td><td>98.27% ± 0.09%</td><td>99.15% ± 0.04%</td>
-                <td>99.11% ± 0.07%</td><td>98.99% ± 0.11%</td><td>98.78% ± 0.02%</td><td><b>99.19% ± 0.03%</b></td><td>99.09% ± 0.07%</td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">FMNIST</td>
-                <td>89.27% ± 0.23%</td><td>89.21% ± 0.24%</td><td>83.69% ± 0.45%</td><td>89.29% ± 0.08%</td>
-                <td><b>89.65% ± 0.03%</b></td><td>89.01% ± 0.11%</td><td>87.54% ± 0.57%</td><td>89.35% ± 0.16%</td><td>89.16% ± 0.36%</td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">SVHN</td>
-                <td>88.07% ± 0.36%</td><td>88.30% ± 0.19%</td><td>82.05% ± 0.24%</td><td>87.30% ± 1.51%</td>
-                <td>60.14% ± 28.69%</td><td>87.32% ± 0.34%</td><td>61.30% ± 29.50%</td><td>87.63% ± 1.65%</td><td><b>88.35% ± 0.21%</b></td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">CINIC10</td>
-                <td>39.99% ± 0.88%</td><td>39.82% ± 0.26%</td><td><b>41.58% ± 0.48%</b></td><td>40.18% ± 0.41%</td>
-                <td>36.91% ± 1.39%</td><td>40.83% ± 0.56%</td><td>36.58% ± 0.93%</td><td>40.85% ± 1.13%</td><td>39.92% ± 0.92%</td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">CIFAR10</td>
-                <td>72.59% ± 0.51%</td><td><b>74.14% ± 0.01%</b></td><td>51.88% ± 0.45%</td><td>72.23% ± 0.31%</td>
-                <td>69.53% ± 0.59%</td><td>68.47% ± 0.37%</td><td>65.79% ± 2.08%</td><td>69.16% ± 0.47%</td><td>72.36% ± 0.32%</td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">FedISIC2019</td>
-                <td>59.15% ± 0.83%</td><td><b>60.25% ± 0.12%</b></td><td>52.59% ± 0.62%</td><td>58.91% ± 0.30%</td>
-                <td>51.82% ± 1.85%</td><td>51.49% ± 2.32%</td><td>51.49% ± 2.32%</td><td>59.23% ± 0.54%</td><td>58.9% ± 0.31%</td>
-              </tr>
-              <tr>
-                <td class="dataset-cell">Adult</td>
-                <td>84.24% ± 0.39%</td><td>84.10% ± 0.16%</td><td><b>85.59% ± 0.12%</b></td><td>83.97% ± 0.06%</td>
-                <td>83.9% ± 0.1%</td><td>84.23% ± 0.51%</td><td>83.90% ± 0.10%</td><td>84.42% ± 0.97%</td><td>84.09% ± 0.51%</td>
-              </tr>
-
+                <tr>
+                    <td rowspan="7" class="homogeneous">Homogeneous partition</td>
+                    <td class="dataset-cell">MNIST</td>
+                    <td rowspan="7"><span class="math-formula">IID</span></td>
+                    <td class="performance-high">99.11% ± 0.05%</td>
+                    <td class="performance-high">99.10% ± 0.01%</td>
+                    <td class="performance-high">98.27% ± 0.09%</td>
+                    <td class="performance-high">99.15% ± 0.04%</td>
+                    <td class="performance-high">99.11% ± 0.07%</td>
+                    <td class="performance-high">98.99% ± 0.11%</td>
+                    <td class="performance-high">98.78% ± 0.02%</td>
+                    <td class="best-result performance-high">99.19% ± 0.03%</td>
+                    <td class="performance-high">99.09% ± 0.07%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">FMNIST</td>
+                    <td class="performance-medium">89.27% ± 0.23%</td>
+                    <td class="performance-medium">89.21% ± 0.24%</td>
+                    <td class="performance-medium">83.69% ± 0.45%</td>
+                    <td class="performance-medium">89.29% ± 0.08%</td>
+                    <td class="best-result performance-medium">89.65% ± 0.03%</td>
+                    <td class="performance-medium">89.01% ± 0.11%</td>
+                    <td class="performance-medium">87.54% ± 0.57%</td>
+                    <td class="performance-medium">89.35% ± 0.16%</td>
+                    <td class="performance-medium">89.16% ± 0.36%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">SVHN</td>
+                    <td class="performance-medium">88.07% ± 0.36%</td>
+                    <td class="performance-medium">88.30% ± 0.19%</td>
+                    <td class="performance-medium">82.05% ± 0.24%</td>
+                    <td class="performance-medium">87.30% ± 1.51%</td>
+                    <td class="performance-medium">60.14% ± 28.69%</td>
+                    <td class="performance-medium">87.32% ± 0.34%</td>
+                    <td class="performance-medium">61.30% ± 29.50%</td>
+                    <td class="performance-medium">87.63% ± 1.65%</td>
+                    <td class="best-result performance-medium">88.35% ± 0.21%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">CINIC10</td>
+                    <td class="performance-low">39.99% ± 0.88%</td>
+                    <td class="performance-low">39.82% ± 0.26%</td>
+                    <td class="best-result performance-low">41.58% ± 0.48%</td>
+                    <td class="performance-low">40.18% ± 0.41%</td>
+                    <td class="performance-low">36.91% ± 1.39%</td>
+                    <td class="performance-low">40.83% ± 0.56%</td>
+                    <td class="performance-low">36.58% ± 0.93%</td>
+                    <td class="performance-low">40.85% ± 1.13%</td>
+                    <td class="performance-low">39.92% ± 0.92%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">CIFAR10</td>
+                    <td class="performance-medium">72.59% ± 0.51%</td>
+                    <td class="best-result performance-medium">74.14% ± 0.01%</td>
+                    <td class="performance-medium">51.88% ± 0.45%</td>
+                    <td class="performance-medium">72.23% ± 0.31%</td>
+                    <td class="performance-medium">69.53% ± 0.59%</td>
+                    <td class="performance-medium">68.47% ± 0.37%</td>
+                    <td class="performance-medium">65.79% ± 2.08%</td>
+                    <td class="performance-medium">69.16% ± 0.47%</td>
+                    <td class="performance-medium">72.36% ± 0.32%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">FedISIC2019</td>
+                    <td class="performance-medium">59.15% ± 0.83%</td>
+                    <td class="best-result performance-medium">60.25% ± 0.12%</td>
+                    <td class="performance-medium">52.59% ± 0.62%</td>
+                    <td class="performance-medium">58.91% ± 0.30%</td>
+                    <td class="performance-medium">51.82% ± 1.85%</td>
+                    <td class="performance-medium">51.49% ± 2.32%</td>
+                    <td class="performance-medium">51.49% ± 2.32%</td>
+                    <td class="performance-medium">59.23% ± 0.54%</td>
+                    <td class="performance-medium">58.9% ± 0.31%</td>
+                </tr>
+                <tr>
+                    <td class="dataset-cell">Adult</td>
+                    <td class="performance-medium">84.24% ± 0.39%</td>
+                    <td class="performance-medium">84.10% ± 0.16%</td>
+                    <td class="best-result performance-medium">85.59% ± 0.12%</td>
+                    <td class="performance-medium">83.97% ± 0.06%</td>
+                    <td class="performance-medium">83.9% ± 0.1%</td>
+                    <td class="performance-medium">84.23% ± 0.51%</td>
+                    <td class="performance-medium">83.90% ± 0.10%</td>
+                    <td class="performance-medium">84.42% ± 0.97%</td>
+                    <td class="performance-medium">84.09% ± 0.51%</td>
+                </tr>
               <!-- Summary row -->
               <tr>
                 <td colspan="3" style="text-align: center; font-weight: bold;">Number of times that performs the best</td>
-                <td>0</td><td>2</td><td>2</td><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td>
+                  <td style="background-color: #fce4ec;">0</td>
+               <td style="background-color: #fff3e0;">2</td>
+                <td style="background-color: #fff3e0;">2</td>
+                <td style="background-color: #fce4ec;">0</td>
+                      <td style="background-color: #fce4ec;">1</td>
+               <td style="background-color: #fce4ec;">0</td>
+                      <td style="background-color: #fce4ec;">0</td>
+               <td style="background-color: #fce4ec;">1</td>
+                      <td style="background-color: #fce4ec;">1</td>
               </tr>
 
             </tbody>
           </table>
+          <div style="margin-top: 20px; font-size: 12px; color: #666;">
+            <strong>Legend:</strong>
+            <span style="background-color: #fff3cd; padding: 2px 6px; margin: 0 10px;">Best Result</span>
+            <span style="color: #2e7d32;">■ High Performance (>80%)</span>
+            <span style="color: #f57700; margin-left: 10px;">■ Medium Performance (30-80%)</span>
+            <span style="color: #d32f2f; margin-left: 10px;">■ Low Performance (<30%)</span>
+        </div>
           </div>     
     </div>
     
