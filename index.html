@@ -514,23 +514,7 @@ tbody tr:hover {
         <div class="column is-six-fifths">
           <h2 class="title is-3">Abstract</h2>
           <div class="content has-text-justified">
-            <p>The field of federated learning (FL) has gained
-              prominence as a promising approach for training machine
-              learning models on distributed data while safeguarding privacy.
-              However, the effectiveness of FL algorithms can be considerably
-              impacted by non-independent and identically distributed
-              (Non-IID) data across participating clients. This study offers a
-              thorough comparative analysis of several notable FL algorithms,
-              including FedAvg, FedProx, SCAFFOLD, FedNova, FedAdagrad/
-              Yogi/Adam, MOON, and FedBN, under diverse Non-IID
-              data conditions. We examine the theoretical underpinnings of
-              these algorithms and assess their performance using established
-              datasets and evaluation metrics. Our findings illuminate the
-              advantages and limitations of each algorithm in managing
-              various types of Non-IID data, offering valuable guidance for
-              selecting the most suitable FL algorithm for specific use cases.
-              Additionally, we explore the constraints of current methodologies
-              and propose avenues for future investigation.</p>
+            <p>The efficacy of Federated Learning (FL), a prominent privacy-preserving machine learning paradigm, is critically challenged by the statistical heterogeneity inherent in non-independent and identically distributed (Non-IID) data across client silos. While numerous algorithms have been proposed to address this issue, a comprehensive understanding of their relative performance under diverse conditions remains elusive. This paper presents a large-scale, systematic comparative study, evaluating nine notable FL algorithms—including FedAvg, FedProx, SCAFFOLD, MOON, FedBN, and server-side adaptive methods—under a wide spectrum of Non-IID settings. Our methodology involves rigorous experimentation across eight benchmark datasets, simulating practical challenges such as label distribution skew, feature distribution skew, and data quantity imbalances. Our key finding is that no single algorithm is universally superior; optimal performance is highly contingent on the specific type of data heterogeneity. We demonstrate that adaptive optimizers like FedAdagrad excel under severe label skew, whereas FedBN is the definitive choice for feature skew. Furthermore, we uncover the practical limitations of theoretically-motivated methods like SCAFFOLD in highly heterogeneous environments. These insights culminate in a practical decision tree to guide algorithm selection, providing a clear roadmap for researchers and practitioners. </p>
             <!-- <p>
               Instruction tuning large language models (LLMs) using machine-generated instruction-following data has improved zero-shot capabilities on new tasks in the language domain, but the idea is less explored in the multimodal field.
               <ol type="1">
