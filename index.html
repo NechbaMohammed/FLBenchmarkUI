@@ -1,1877 +1,245 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en" data-theme="light">
 <head>
   <meta charset="utf-8">
-  <meta name="description" content="Fundamentals and Experimental Analysis of Federated Learning Algorithms: A Benchmark Study on Realistic Non-IID Data Silos">
-  <meta name="keywords" content="Federated Learning, Benchmark, Non-IID, Data Silos">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>FLBenchmark</title>
-
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-  <link rel="stylesheet" href="./static/css/index.css">
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/954/954591.png">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
-  <script type="module" src="https://gradio.s3-us-west-2.amazonaws.com/4.16.0/gradio.js"></script>
+  <title>FLBenchmark — An experimental benchmark of federated learning on non-IID data</title>
+  <meta name="description" content="FLBenchmark: an experimental benchmark of nine federated learning algorithms (FedAvg, FedProx, FedNova, SCAFFOLD, MOON, FedAdagrad, FedAdam, FedYogi, FedBN) on eight datasets and 47 non-IID settings, with equal-effort tuning, 5-10 seeds and significance tests.">
+  <meta name="keywords" content="federated learning, benchmark, non-IID, data silos, SCAFFOLD, FedBN, FedProx, FedAdam">
+  <meta property="og:title" content="FLBenchmark — federated learning on non-IID data">
+  <meta property="og:description" content="Equal-effort tuning, 5-10 seeds, paired significance tests, 3,890 evaluation runs.">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="images/logo.png">
+  <link rel="stylesheet" href="static/css/site.css">
 </head>
-
-<style>
-/* Body and base styles */
-body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-  background-color: #f5f5f5;
-}
-
-/* Expandable card styles */
-.expandable-card .card-text-container {
-  max-height: 200px;
-  overflow-y: hidden;
-  position: relative;
-}
-
-.expandable-card.expanded .card-text-container {
-  max-height: none;
-}
-
-.expand-btn {
-  position: relative;
-  display: none;
-  background-color: rgba(255, 255, 255, 0.8);
-  color: #510c75;
-  border-color: transparent;
-}
-
-.expand-btn:hover {
-  background-color: rgba(200, 200, 200, 0.8);
-  text-decoration: none;
-  border-color: transparent;
-  color: #510c75;
-}
-
-.expand-btn:focus {
-  outline: none;
-  text-decoration: none;
-}
-
-.expandable-card:not(.expanded) .card-text-container:after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 90px;
-  background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 1));
-}
-
-.expandable-card:not(.expanded) .expand-btn {
-  margin-top: -40px;
-}
-
-.card-body {
-  padding-bottom: 5px;
-}
-
-/* Layout utilities */
-.vertical-flex-layout {
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.figure-img {
-  max-width: 100%;
-  height: auto;
-}
-
-.adjustable-font-size {
-  font-size: calc(0.5rem + 2vw);
-}
-
-/* Chat history */
-.chat-history {
-  flex-grow: 1;
-  overflow-y: auto;
-  padding: 5px;
-  border-bottom: 1px solid #ccc;
-  margin-bottom: 10px;
-}
-
-#gradio pre {
-  background-color: transparent;
-}
-
-/* Main table container */
-.table-container {
-  max-width: 70%;
-  overflow-x: auto;
-  margin: 20px auto;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  border-radius: 10px;
-  background: #fff;
-  padding: 15px;
-  transition: all 0.3s ease;
-}
-
-.table-container:hover {
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-  transform: translateY(-5px);
-}
-
-/* Table base styles */
-table {
-  border-collapse: separate;
-  border-spacing: 0;
-  width: 100%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #34495e;
-  background-color: transparent;
-  min-width: 1200px;
-  font-size: 14px;
-}
-
-/* Table headers and cells */
-th, td {
-  border: none;
-  padding: 15px 8px;
-  vertical-align: middle;
-  position: relative;
-  text-align: center;
-  white-space: nowrap;
-}
-
-th {
-  background-color: #2c3e50;
-  color: #ffff00;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  font-size: 16px;
-  text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  border: 1px solid #555;
-}
-
-th:after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background-color: #ffff00;
-  transition: width 0.3s ease;
-}
-
-th:hover:after {
-  width: 100%;
-}
-
-td {
-  border: 1px solid #ddd;
-  padding: 10px 8px;
-}
-
-/* Table border radius */
-th:first-child {
-  border-top-left-radius: 8px;
-}
-
-th:last-child {
-  border-top-right-radius: 8px;
-}
-
-tbody tr:last-child td:first-child {
-  border-bottom-left-radius: 8px;
-}
-
-tbody tr:last-child td:last-child {
-  border-bottom-right-radius: 8px;
-}
-
-/* Table row styling */
-tbody tr {
-  transition: all 0.3s;
-  border-left: 3px solid transparent;
-}
-
-tbody tr:nth-child(odd) {
-  background-color: #f8f9fa;
-}
-
-tbody tr:nth-child(even) {
-  background-color: #ffffff;
-}
-
-tbody tr:hover {
-  background-color: #e3f2fd;
-  border-left: 3px solid #2980b9;
-  transform: translateX(5px);
-}
-
-/* Link styling */
-.view-button a {
-  color: #2980b9;
-  text-decoration: none;
-  font-weight: 600;
-  padding: 8px 15px;
-  border-radius: 20px;
-  background-color: #e8f4fc;
-  transition: all 0.3s;
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-}
-
-.view-button a:before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: #2980b9;
-  transition: all 0.3s ease;
-  z-index: -1;
-}
-
-.view-button a:hover {
-  color: white;
-}
-
-.view-button a:hover:before {
-  left: 0;
-}
-
-/* Special cell types */
-.label-skew, .feature-skew, .quantity-skew, .homogeneous {
-  color: #2c3e50;
-  font-weight: 600;
-  background-color: #f1f5f9;
-  
-  writing-mode: vertical-lr;
-  text-orientation: mixed;
-  text-align: center;
-   vertical-align: center;
-
-
-}
-
-.dataset-cell {
-  color: #34495e;
-  font-weight: 600;
-  background-color: #e9ecef;
-  vertical-align: middle;
-}
-
-.math-formula {
-  background-color: #f1f5f9;
-  padding: 5px 10px;
-  border-radius: 4px;
-  display: inline-block;
-  color: #34495e;
-  font-family: 'Courier New', monospace;
-  transition: all 0.3s ease;
-  border-left: 2px solid #2980b9;
-  font-style: italic;
-  font-family: 'Times New Roman', serif;
-}
-
-.best-result {
-  font-weight: bold;
-  background-color: #fff3cd;
-}
-
-/* Performance indicators */
-.performance-high {
-  color: #2e7d32;
-}
-
-.performance-medium {
-  color: #f57700;
-}
-
-.performance-low {
-  color: #d32f2f;
-}
-
-/* Section headers */
-.section-header {
-  background-color: #2c3e50;
-  height: 8px;
-  padding: 0;
-}
-
-.section-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.section-icon {
-  width: 32px;
-  height: auto;
-  margin-right: 12px;
-  flex-shrink: 0;
-}
-
-.section-title {
-  margin: 0;
-  font-size: 1.5rem;
-  line-height: 1.4;
-}
-
-/* Image containers */
-.image-container {
-  width: 100%;
-  margin-bottom: 40px;
-  text-align: center;
-}
-
-.responsive-image {
-  max-width: 80%;
-  height: auto;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
-
-.responsive-image:hover {
-  transform: scale(1.01);
-}
-
-/* Animation */
-.pulse {
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(41, 128, 185, 0.7); }
-  70% { box-shadow: 0 0 0 10px rgba(41, 128, 185, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(41, 128, 185, 0); }
-}
-
-/* Media queries for responsiveness */
-@media screen and (max-width: 768px) {
-  .section-title {
-    font-size: 1.3rem;
-  }
-  
-  .section-icon {
-    width: 28px;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .table-container {
-    overflow-x: auto;
-    width: 100%;
-  }
-  
-  th, td {
-    padding: 2px;
-    font-size: 0.9em;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .section-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .section-icon {
-    margin-bottom: 8px;
-  }
-}
-
-@media screen and (max-width: 400px) {
-  table thead {
-    display: none;
-  }
-  
-  table td {
-    display: block;
-    width: 100%;
-    text-align: right;
-    border-bottom: 0;
-  }
-  
-  table td:before {
-    content: attr(data-label);
-    float: left;
-    font-weight: bold;
-  }
-  
-  table tr td:last-child {
-    border-bottom: 2px solid #9b9d9e;
-    margin-bottom: 10px;
-  }
-}
-</style>
-
 <body>
 
-
-  <section class="hero">
-    <div class="hero-body">
-      <div class="container is-max-desktop">
-        <div class="columns is-centered">
-          <div class="column has-text-centered">
-            <h1 class="title is-1 publication-title">  A <span class="is-size-2"><span class="is-size-1">B</span>enchmark <span class="is-size-1">S</span>tudy <span class="is-size-1">o</span>n <span class="is-size-1">R</span>ealistic <span class="is-size-1">N</span>on-<span class="is-size-1">IID</span> <span class="is-size-1">D</span>ata Silos</span></h1>
-            <h3 class="title is-3 publication-title">Fundamentals and Experimental Analysis of Federated Learning Algorithms</h3>
-            <h5 class="subtitle is-5 publication-awards">Coming</h5>
-            <div class="is-size-5 publication-authors">
-              <span class="author-block">
-                <a href="https://scholar.google.com/citations?user=AVt7JDYAAAAJ&hl=fr" style="color:#f68946;font-weight:normal;">Mohammed Nechba<sup>*</sup></a>,
-                <a href="https://scholar.google.com/citations?user=CLgOVHUAAAAJ&hl=fr" style="color:#f68946;font-weight:normal;">Abdellatif El Afia</a>,
-                <a href="https://scholar.google.com/citations?user=moRsZ2kAAAAJ&hl=fr" style="color:#f68946;font-weight:normal;">Bessam Abdulrazak</a>
-
-              </span>
-            </div>
-
-            <div class="is-size-5 publication-authors">
-              <span class="author-block"><b style="color:#f68946; font-weight:normal">&#x25B6 </b> University of Mohammed-V</b></span>
-              <span class="author-block"><b style="color:#008AD7; font-weight:normal">&#x25B6 </b> University of Sherbrooke</span>
-            </div>
-
-            <div class="is-size-6 publication-authors">
-              <span class="author-block"><sup>*</sup>Equal Contribution</span>
-            </div>
-
-            <div class="column has-text-centered">
-              <div class="publication-links">
-                <span class="link-block">
-                  <a href="-------" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="ai ai-arxiv"></i>
-                    </span>
-                    <span>arXiv</span>
-                  </a>
-                </span>
-                <span class="link-block">
-                  <a href="https://github.com/NechbaMohammed/FLBenchmark?tab=readme-ov-file" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fab fa-github"></i>
-                    </span>
-                    <span>Code</span>
-                  </a>
-                </span>
-                <span class="link-block">
-                  <a href="https://pypi.org/project/fedbench/" target="_blank" class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fas fa-box"></i>
-                    </span>
-                    <span>PyPI</span>
-                  </a>
-                </span>
-                
-
-
-                
-
-              
-              </div>
-            </div>
-
-            
-
-  <section class="hero teaser">
-    <div class="container is-max-desktop">
-      <div class="hero-body">
-        <h4 class="subtitle has-text-centered">
-          🔥<span style="color: #ff3860">[NEW!]</span> FedBench-0.1.3  enables efficient FL benchmarking, evaluating 9+ algorithms across 8+ datasets (images/tabular) on one A40 GPU in ~3 months. It offers precise control over client heterogeneity with minimal setup, providing comprehensive metrics for actionable algorithm selection.   <br><br>
-          This end-to-end framework sets a new reproducibility standard through production-ready implementations, enabling direct performance comparisons while reducing validation overhead.
-        </h4>
-      </div>
+<nav class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><i></i>FLBenchmark</a>
+    <div class="links">
+      <a href="#findings">Findings</a><a href="#leaderboard">Leaderboard</a><a href="#results">Results</a><a href="#core">Ten seeds</a><a href="#curves">Curves</a>
+      <a href="#guide">Guide</a><a href="#insights">Deep dives</a><a href="#setup">Protocol</a><a href="#reproduce">Reproduce</a><a href="#cite">Cite</a>
     </div>
-  </section>
-  
+    <button class="iconbtn" id="theme" title="Toggle light / dark">◐</button>
+  </div>
+</nav>
 
-
-
-  <section class="section"  style="background-color:#efeff081">
-    <div class="container is-max-desktop">
-      <!-- Abstract. -->
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-six-fifths">
-          <h2 class="title is-3">Abstract</h2>
-          <div class="content has-text-justified">
-            <p>The efficacy of Federated Learning (FL), a prominent privacy-preserving machine learning paradigm, is critically challenged by the statistical heterogeneity inherent in non-independent and identically distributed (Non-IID) data across client silos. While numerous algorithms have been proposed to address this issue, a comprehensive understanding of their relative performance under diverse conditions remains elusive. This paper presents a large-scale, systematic comparative study, evaluating nine notable FL algorithms—including FedAvg, FedProx, SCAFFOLD, MOON, FedBN, and server-side adaptive methods—under a wide spectrum of Non-IID settings. Our methodology involves rigorous experimentation across eight benchmark datasets, simulating practical challenges such as label distribution skew, feature distribution skew, and data quantity imbalances. Our key finding is that no single algorithm is universally superior; optimal performance is highly contingent on the specific type of data heterogeneity. We demonstrate that adaptive optimizers like FedAdagrad excel under severe label skew, whereas FedBN is the definitive choice for feature skew. Furthermore, we uncover the practical limitations of theoretically-motivated methods like SCAFFOLD in highly heterogeneous environments. These insights culminate in a practical decision tree to guide algorithm selection, providing a clear roadmap for researchers and practitioners. </p>
-            <!-- <p>
-              Instruction tuning large language models (LLMs) using machine-generated instruction-following data has improved zero-shot capabilities on new tasks in the language domain, but the idea is less explored in the multimodal field.
-              <ol type="1">
-                <li><b>Multimodal Instruct Data</b>. <span style="font-size: 95%;">We present the first attempt to use <a href="https://openai.com/research/gpt-4">language-only GPT-4</a> to generate multimodal language-image instruction-following data. </span></li>
-                <li><b>LLaVA Model</b>. <span style="font-size: 95%;">We introduce <it><b>LLaVA</b> (<b>L</b>arge <b>L</b>anguage-<b>a</b>nd-<b>V</b>ision <b>A</b>ssistant)</it>, an end-to-end trained large multimodal model that connects a vision encoder and LLM for general-purpose visual and language understanding.</li>
-                <li><b>Performance</b>. <span style="font-size: 95%;">Our early experiments show that LLaVA demonstrates impressive multimodel chat abilities, sometimes exhibiting the behaviors of multimodal GPT-4 on unseen images/instructions, and yields a 85.1% relative score compared with GPT-4 on a synthetic multimodal instruction-following dataset.
-                  When fine-tuned on <a href="https://scienceqa.github.io/">Science QA</a>, the synergy of LLaVA and GPT-4  achieves a new state-of-the-art accuracy of 92.53%.</li>
-                <li><b>Open-source</b>. <span style="font-size: 95%;">We make GPT-4 generated visual instruction tuning data, our model and code base publicly available.</li>
-              </ol>  
-           </p> -->
-  
-          </div>
-        </div>
-      </div>
-        
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="eyebrow">Experimental benchmark · Scientific Reports (under revision)</div>
+    <h1>Which federated learning algorithm <span>really</span> works on non-IID data?</h1>
+    <p class="sub">An equal-effort, statistically tested comparison of nine algorithms on eight datasets and 47 non-IID settings — re-implemented from scratch, tuned on validation data only, and evaluated with five to ten seeds.</p>
+    <div class="authors">
+      <a href="https://scholar.google.com/citations?user=AVt7JDYAAAAJ&hl=fr">Mohammed Nechba</a><sup>1,2*</sup>,
+      <a href="https://scholar.google.com/citations?user=moRsZ2kAAAAJ&hl=fr">Bessam Abdulrazak</a><sup>1</sup>,
+      <a href="https://scholar.google.com/citations?user=CLgOVHUAAAAJ&hl=fr">Abdellatif El Afia</a><sup>2</sup>
+      <div class="affil"><sup>1</sup>Université de Sherbrooke, Canada &nbsp;·&nbsp; <sup>2</sup>Université Mohammed V de Rabat — ENSIAS, Morocco &nbsp;·&nbsp; <sup>*</sup>corresponding author</div>
     </div>
-  </section>
-
-
-  
-<section class="section">
-  <!-- Results. -->
-  <div class="columns is-centered has-text-centered">
-    <div class="column is-six-fifths">
-      <h2 class="title is-3"><img id="painting_icon" width="3%" src="https://cdn-icons-png.flaticon.com/512/5886/5886212.png"> Dataset Information</h2>
+    <div class="btns">
+      <a class="btn primary" href="https://github.com/NechbaMohammed/FLBenchmark" target="_blank" rel="noopener">⬢ Code &amp; raw results</a>
+      <a class="btn" href="https://pypi.org/project/fedbench/" target="_blank" rel="noopener">📦 PyPI</a>
+      <span class="btn soon" title="Available at publication">📄 Paper (soon)</span>
+      <span class="btn soon" title="DOI minted at acceptance">🗄 Zenodo archive (soon)</span>
+      <a class="btn" href="#reproduce">▶ Reproduce</a>
     </div>
-  </div>
-  <!-- </div> -->
-  <!--/ Results. -->    
-  <div class="container is-max-desktop">
-  <div class="column is-full-width" >
-    <table class="GeneratedTable">
-      <thead>
-        <tr>
-          <th style="color: yellow;">Datasets</th>
-          <th style="color: yellow;">#training instances</th>
-          <th style="color: yellow;">#test instances</th>
-          <th style="color: yellow;">#features</th>
-          <th style="color: yellow;">#classes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td> <a href="https://pytorch.org/vision/main/generated/torchvision.datasets.MNIST.html">MNIST</a></td>
-          <td>60,000</td>
-          <td>10,000</td>
-          <td>784</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td> <a href="https://github.com/zalandoresearch/fashion-mnist">FMNIST</a></td>
-          <td>60,000</td>
-          <td>10,000</td>
-          <td>784</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td><a href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-10</a></td>
-          <td>50,000</td>
-          <td>10,000</td>
-          <td>3,072</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td> <a href="https://huggingface.co/datasets/ufldl-stanford/svhn">SVHN</a></td>
-          <td>73,257</td>
-          <td>26,032</td>
-          <td>3,072</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td> <a href="https://huggingface.co/datasets/flwrlabs/cinic10">CINIC10</a></td>
-          <td>90,000</td>
-          <td>90,000</td>
-          <td>3,072</td>
-          <td>10</td>
-        </tr>
-        <tr>
-          <td> <a href="https://huggingface.co/datasets/flwrlabs/fed-isic2019">FED-ISIC2019</a></td>
-          <td>18,597</td>
-          <td>4,650</td>
-          <td>3,072</td>
-          <td>8</td>
-        </tr>
-        <tr>
-          <td> <a href="https://huggingface.co/datasets/scikit-learn/adult-census-income">Adult</a></td>
-          <td>26,048</td>
-          <td>6,512</td>
-          <td>99</td>
-          <td>2</td>
-        </tr>
-
-        <tr>
-          <td> <a href="https://huggingface.co/datasets/Nechba/fcube">FCUBE</a></td>
-          <td>4,000</td>
-          <td>1,000</td>
-          <td>3</td>
-          <td>2</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  </div>
-
-<!-- CSS Code: Place this code in the document's head (between the 'head' tags) -->
-
-    
+    <div class="stats">
+      <div class="stat"><b data-count="10">0</b><span>algorithms<br>(9 methods + 1 control)</span></div>
+      <div class="stat"><b data-count="8">0</b><span>datasets (6 image,<br>2 tabular)</span></div>
+      <div class="stat"><b data-count="47">0</b><span>non-IID settings</span></div>
+      <div class="stat"><b data-count="5420">0</b><span>training runs<br>(tuning + evaluation)</span></div>
+      <div class="stat"><b data-count="10">0</b><span>seeds in the five<br>core settings</span></div>
     </div>
+    <div class="notice"><b>Updated results.</b> The benchmark was <b>re-implemented and re-run from scratch</b> after errors were found in our first implementation (SCAFFOLD control variates, FedProx, FedBN, adaptive optimisers, seeds). Numbers and conclusions published in the first version of this study are <b>superseded</b>; everything on this page comes from the corrected, tested code (41 unit/regression tests).</div>
   </div>
+</header>
 
-
-</section>
- 
-
-
-
-<section class="section">
-  <!-- Results. -->
-  <div class="columns is-centered has-text-centered">
-    <div class="column is-six-fifths">
-      <h2 class="title is-3"><img id="painting_icon" width="3%" src="https://cdn-icons-png.flaticon.com/512/3515/3515174.png"> Performance</h2>
+<main>
+<section id="findings">
+  <div class="wrap">
+    <div class="eyebrow">TL;DR</div>
+    <h2>Four things the data say</h2>
+    <p class="lead">Statistical heterogeneity is a central obstacle for federated learning, and many algorithms claim to mitigate it. Published comparisons rarely use equal tuning effort, enough repetitions or statistical tests; here every claim comes with a paired test.</p>
+    <div class="grid g4" style="margin-top:22px">
+      <div class="card finding"><div class="big">1.75</div><h4>No universal winner</h4><p>Friedman test over 47 settings rejects equality, but the Nemenyi critical difference (1.75) only separates FedBN and MOON from the leaders. Only FedAdagrad is significantly better than FedAvg across settings (Holm p = 0.042).</p></div>
+      <div class="card finding"><div class="big">+8.4</div><h4>Label skew is the hard case</h4><p>FedAvg falls from 74.5% (IID) to 24.2% for #C = 1. Adaptive server optimizers gain up to +8.4 points on FMNIST #C = 2 — <span class="badge warn">not significant</span> after correction.</p></div>
+      <div class="card finding"><div class="big">17/47</div><h4>SCAFFOLD is competitive — but costs 2×</h4><p>With the corrected algorithm it is best-ranked under IID, quantity and feature skew, but it sends two vectors per round: at equal <i>bytes</i> it beats FedAvg in only 17 of 47 settings.</p></div>
+      <div class="card finding"><div class="big">0/47</div><h4>FedBN does not beat its control</h4><p>Against the matched BatchNorm control (FedAvg-BN) FedBN is never better and significantly worse in 29 of 47 settings in this global-model evaluation.</p></div>
     </div>
-  </div>
-
-
-
-  <!-- </div> -->
-  <!--/ Results. -->    
-<div class="container is-max-desktop">
-
-
-  <!-- Grounedtext2img. -->
-  <div class="columns is-centered">
-    <div class="column is-full-width">
-      
-      <!-- <p style="font-family:Times New Roman">aa<b></b>            -->
-        <div class="table-container">
-          <h2 class="title is-4"><img id="painting_icon" width="4%" src="images/icone1.png"> <span style="font-size: 100%;"></span> Federated Learning Algorithms Comparison Table  </h2>
-
-          <table class="table is-bordered is-hoverable is-fullwidth">
-            <thead>
-              <tr>
-                <th style="color: yellow;">CATEGORY</th>
-                <th style="color: yellow;">DATASET</th>
-                <th style="color: yellow;">PARTITIONING</th>
-                <th style="color: yellow;">FedAvg</th>
-                <th style="color: yellow;">FedProx</th>
-                <th style="color: yellow;">SCAFFOLD</th>
-                <th style="color: yellow;">FedNova</th>
-                <th style="color: yellow;">FedAdagrad</th>
-                <th style="color: yellow;">FedYogi</th>
-                <th style="color: yellow;">FedAdam</th>
-                <th style="color: yellow;">MOON</th>
-                <th style="color: yellow;">FedBN</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Label Distribution Skew -->
-             <!-- MNIST Dataset -->
-                <tr>
-          
-                    <td rowspan="26" class="label-skew">Label Distribution Skew</td>
-                    <td rowspan="4" class="dataset-cell">MNIST</td>
-                    <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
-                    <td class="performance-high">98.85% ± 0.05%</td>
-                    <td class="performance-high">98.91% ± 0.03%</td>
-                    <td class="performance-low">61.99% ± 1.4%</td>
-                    <td class="best-result performance-high">98.97% ± 0.03%</td>
-                    <td class="performance-high">98.81% ± 0.04%</td>
-                    <td class="performance-high">98.86% ± 0.06%</td>
-                    <td class="performance-high">98.46% ± 0.02%</td>
-                    <td class="performance-high">98.80% ± 0.08%</td>
-                    <td class="performance-high">98.91% ± 0.02%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 1</span></td>
-                    <td class="performance-medium">40.34% ± 26.51%</td>
-                    <td class="performance-medium">40.24% ± 21.8%</td>
-                    <td class="performance-low">10.99% ± 0.5%</td>
-                    <td class="performance-medium">54.66% ± 9.53%</td>
-                    <td class="best-result performance-medium">68.85% ± 9.5%</td>
-                    <td class="performance-medium">34.20% ± 15.34%</td>
-                    <td class="performance-low">18.86% ± 12.77%</td>
-                    <td class="performance-low">9.92% ± 0.24%</td>
-                    <td class="performance-medium">60.73% ± 7.55%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 2</span></td>
-                    <td class="performance-high">97.53% ± 0.07%</td>
-                    <td class="performance-high">97.42% ± 0.12%</td>
-                    <td class="performance-low">21.81% ± 1.92%</td>
-                    <td class="performance-high">97.37% ± 0.31%</td>
-                    <td class="performance-high">95.92% ± 0.37%</td>
-                    <td class="best-result performance-high">97.78% ± 0.22%</td>
-                    <td class="performance-medium">61.91% ± 36.65%</td>
-                    <td class="performance-medium">55.75% ± 32.89%</td>
-                    <td class="performance-high">97.50% ± 0.26%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 3</span></td>
-                    <td class="performance-high">98.53% ± 0.16%</td>
-                    <td class="performance-high">98.65% ± 0.15%</td>
-                    <td class="performance-low">29.95% ± 0.15%</td>
-                    <td class="performance-high">98.43% ± 0.15%</td>
-                    <td class="performance-high">98.22% ± 0.07%</td>
-                    <td class="best-result performance-high">98.69% ± 0.11%</td>
-                    <td class="performance-high">95.8% ± 1.82%</td>
-                    <td class="performance-high">95.06% ± 1.60%</td>
-                    <td class="performance-high">98.56% ± 0.11%</td>
-                </tr>
-                
-                <!-- FMNIST Dataset -->
-                <tr>
-                    <td rowspan="4" class="dataset-cell">FMNIST</td>
-                    <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
-                    <td class="performance-high">86.88% ± 0.38%</td>
-                    <td class="best-result performance-high">87.16% ± 0.18%</td>
-                    <td class="performance-low">48.80% ± 1.36%</td>
-                    <td class="performance-high">87.12% ± 0.32%</td>
-                    <td class="performance-high">86.39% ± 0.19%</td>
-                    <td class="performance-high">86.44% ± 0.15%</td>
-                    <td class="performance-high">84.46% ± 1.72%</td>
-                    <td class="performance-high">87.15% ± 0.38%</td>
-                    <td class="performance-high">87.01% ± 0.28%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 1</span></td>
-                    <td class="performance-low">15.88% ± 4.6%</td>
-                    <td class="performance-low">28.39% ± 16.68%</td>
-                    <td class="performance-low">10% ± 0.0%</td>
-                    <td class="performance-low">20.28% ± 14.53%</td>
-                    <td class="best-result performance-medium">37% ± 4.9%</td>
-                    <td class="performance-low">25.35% ± 10.93%</td>
-                    <td class="performance-low">10% ± 0.0%</td>
-                    <td class="performance-low">10% ± 0.0%</td>
-                    <td class="performance-low">21.13% ± 10.30%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 2</span></td>
-                    <td class="performance-high">79.3% ± 2.37%</td>
-                    <td class="performance-high">78.33% ± 0.7%</td>
-                    <td class="performance-low">22.85% ± 2.60%</td>
-                    <td class="performance-high">75.76% ± 3.94%</td>
-                    <td class="performance-high">78.11% ± 1.03%</td>
-                    <td class="best-result performance-high">81.97% ± 0.78%</td>
-                    <td class="performance-medium">63.14% ± 15.59%</td>
-                    <td class="performance-medium">67.77% ± 2.61%</td>
-                    <td class="performance-high">79.09% ± 1.18%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 3</span></td>
-                    <td class="best-result performance-high">83.67% ± 0.55%</td>
-                    <td class="performance-high">83.62% ± 0.85%</td>
-                    <td class="performance-low">25.56% ± 0.16%</td>
-                    <td class="performance-high">83.51% ± 0.67%</td>
-                    <td class="performance-high">83.52% ± 0.68%</td>
-                    <td class="performance-high">83.42% ± 0.13%</td>
-                    <td class="performance-high">79.62% ± 0.72%</td>
-                    <td class="performance-high">74.57% ± 3.46%</td>
-                    <td class="performance-high">83.56% ± 0.76%</td>
-                </tr>
-                
-                <!-- SVHN Dataset -->
-                <tr>
-                    <td rowspan="4" class="dataset-cell">SVHN</td>
-                    <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
-                    <td class="performance-high">86.44% ± 0.31%</td>
-                    <td class="performance-high">86.48% ± 0.1%</td>
-                    <td class="performance-low">51.74% ± 1.20%</td>
-                    <td class="performance-high">86.48% ± 0.13%</td>
-                    <td class="best-result performance-high">86.7% ± 0.35%</td>
-                    <td class="performance-high">85.34% ± 0.21%</td>
-                    <td class="best-result performance-high">86.7% ± 0.35%</td>
-                    <td class="performance-high">86.15% ± 0.46%</td>
-                    <td class="performance-high">86.45% ± 0.51%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 1</span></td>
-                    <td class="performance-low">14.32% ± 2.3%</td>
-                    <td class="performance-low">13.27% ± 4.53%</td>
-                    <td class="best-result performance-low">19.59% ± 0.0%</td>
-                    <td class="performance-low">9.15% ± 1.82%</td>
-                    <td class="performance-low">18.37% ± 1.72%</td>
-                    <td class="performance-low">18.37% ± 1.72%</td>
-                    <td class="performance-low">15.65% ± 5.58%</td>
-                    <td class="performance-low">12.49% ± 3.03%</td>
-                    <td class="performance-low">12.69% ± 2.30%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 2</span></td>
-                    <td class="performance-high">77.49% ± 1.34%</td>
-                    <td class="best-result performance-high">79.28% ± 0.17%</td>
-                    <td class="performance-low">24.55% ± 0.86%</td>
-                    <td class="performance-high">72.41% ± 2.15%</td>
-                    <td class="performance-high">76.37% ± 1.18%</td>
-                    <td class="performance-high">79.03% ± 0.26%</td>
-                    <td class="performance-medium">57.99% ± 27.15%</td>
-                    <td class="performance-high">74.41% ± 1.76%</td>
-                    <td class="performance-high">76.27% ± 2.53%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 3</span></td>
-                    <td class="performance-high">81.71% ± 1.08%</td>
-                    <td class="performance-high">82.11% ± 1.14%</td>
-                    <td class="performance-low">31.11% ± 0.51%</td>
-                    <td class="performance-high">81.59% ± 0.91%</td>
-                    <td class="best-result performance-high">82.43% ± 0.14%</td>
-                    <td class="performance-high">81.27% ± 0.64%</td>
-                    <td class="best-result performance-high">82.43% ± 0.14%</td>
-                    <td class="performance-high">81.26% ± 1.06%</td>
-                    <td class="performance-high">81.77% ± 0.49%</td>
-                </tr>
-                
-                <!-- CINIC10 Dataset -->
-                <tr>
-                    <td rowspan="4" class="dataset-cell">CINIC10</td>
-                    <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
-                    <td class="performance-medium">36.41% ± 0.18%</td>
-                    <td class="performance-medium">36.24% ± 0.3%</td>
-                    <td class="performance-low">19.16% ± 0.32%</td>
-                    <td class="performance-medium">36.59% ± 0.69%</td>
-                    <td class="performance-medium">30.24% ± 1.90%</td>
-                    <td class="performance-medium">35.65% ± 0.27%</td>
-                    <td class="performance-medium">30.57% ± 1.46%</td>
-                    <td class="best-result performance-medium">36.93% ± 0.94%</td>
-                    <td class="performance-medium">36.24% ± 0.23%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 1</span></td>
-                    <td class="performance-low">9.64% ± 0.54%</td>
-                    <td class="performance-low">9.46% ± 0.77%</td>
-                    <td class="best-result performance-low">11.17% ± 1.51%</td>
-                    <td class="performance-low">10% ± 0.0%</td>
-                    <td class="performance-low">10% ± 0.0%</td>
-                    <td class="performance-low">9.93% ± 0.33%</td>
-                    <td class="performance-low">10% ± 0.0%</td>
-                    <td class="performance-low">10% ± 0.0%</td>
-                    <td class="performance-low">10% ± 0.0%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 2</span></td>
-                    <td class="performance-low">25.34% ± 1.33%</td>
-                    <td class="best-result performance-low">28.15% ± 1.2%</td>
-                    <td class="performance-low">16.47% ± 1.53%</td>
-                    <td class="performance-low">26.08% ± 1.31%</td>
-                    <td class="performance-low">13.58% ± 5.06%</td>
-                    <td class="performance-low">26.58% ± 0.92%</td>
-                    <td class="performance-low">13.58% ± 5.06%</td>
-                    <td class="performance-low">25.41% ± 0.68%</td>
-                    <td class="performance-low">27.55% ± 0.79%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 3</span></td>
-                    <td class="performance-medium">32.91% ± 0.44%</td>
-                    <td class="performance-medium">32.75% ± 0.42%</td>
-                    <td class="performance-low">15.46% ± 1.17%</td>
-                    <td class="performance-medium">32.99% ± 0.41%</td>
-                    <td class="performance-low">19% ± 6.36%</td>
-                    <td class="performance-medium">30.01% ± 0.91%</td>
-                    <td class="performance-low">18.66% ± 6.13%</td>
-                    <td class="best-result performance-medium">33.32% ± 0.86%</td>
-                    <td class="performance-medium">33.08% ± 0.23%</td>
-                </tr>
-                
-                <!-- CIFAR10 Dataset -->
-                <tr>
-                    <td rowspan="4" class="dataset-cell">CIFAR10</td>
-                    <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
-                    <td class="best-result performance-medium">65.61% ± 1.52%</td>
-                    <td class="performance-medium">64.16% ± 0.25%</td>
-                    <td class="performance-low">25.74% ± 1.65%</td>
-                    <td class="performance-medium">64.66% ± 1.05%</td>
-                    <td class="performance-medium">60.62% ± 0.84%</td>
-                    <td class="performance-medium">59.41% ± 0.4%</td>
-                    <td class="performance-medium">38.95% ± 5.79%</td>
-                    <td class="performance-medium">64.69% ± 0.82%</td>
-                    <td class="performance-medium">63.43% ± 0.102%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 1</span></td>
-                    <td class="performance-low">9.64% ± 0.54%</td>
-                    <td class="performance-low">9.46% ± 0.77%</td>
-                    <td class="performance-low">10.11% ± 0.34%</td>
-                    <td class="performance-low">11.66% ± 2.9%</td>
-                    <td class="performance-low">19.4% ± 0.11%</td>
-                    <td class="best-result performance-low">22.79% ± 3.63%</td>
-                    <td class="performance-low">10% ± 0.0%</td>
-                    <td class="performance-low">10% ± 0.0%</td>
-                    <td class="performance-low">11.20% ± 1.43%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 2</span></td>
-                    <td class="performance-medium">47.83% ± 3.29%</td>
-                    <td class="best-result performance-medium">49.82% ± 0.66%</td>
-                    <td class="performance-low">17.44% ± 1.79%</td>
-                    <td class="performance-medium">46.27% ± 2.21%</td>
-                    <td class="performance-medium">46.63% ± 0.97%</td>
-                    <td class="performance-medium">47.38% ± 1.41%</td>
-                    <td class="performance-low">10% ± 0.0%</td>
-                    <td class="performance-medium">42.23% ± 1.0%</td>
-                    <td class="performance-medium">48.36% ± 1.50%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 3</span></td>
-                    <td class="performance-medium">62.65% ± 1.49%</td>
-                    <td class="best-result performance-medium">63.57% ± 0.2%</td>
-                    <td class="performance-low">20.11% ± 2.02%</td>
-                    <td class="performance-medium">61.7% ± 1.51%</td>
-                    <td class="performance-medium">59.9% ± 1.06%</td>
-                    <td class="performance-medium">59.02% ± 0.34%</td>
-                    <td class="performance-medium">38.34% ± 3.52%</td>
-                    <td class="performance-medium">61.21% ± 0.74%</td>
-                    <td class="performance-medium">61.93% ± 0.89%</td>
-                </tr>
-                
-                <!-- FedISIC2019 Dataset -->
-                <tr>
-                    <td rowspan="4" class="dataset-cell">FedISIC2019</td>
-                    <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
-                    <td class="best-result performance-medium">56.46% ± 0.30%</td>
-                    <td class="performance-medium">56.23% ± 0.49%</td>
-                    <td class="performance-low">28.30% ± 14.09%</td>
-                    <td class="performance-medium">33.61% ± 0.55%</td>
-                    <td class="performance-medium">53.80% ± 0.60%</td>
-                    <td class="performance-medium">54.14% ± 0.38%</td>
-                    <td class="performance-medium">48.27% ± 0.07%</td>
-                    <td class="performance-medium">55.90% ± 0.29%</td>
-                    <td class="performance-medium">56.24% ± 0.55%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 1</span></td>
-                    <td class="performance-low">18.34% ± 0.0%</td>
-                    <td class="performance-low">28.3% ± 14.09%</td>
-                    <td class="performance-medium">48.22% ± 0.0%</td>
-                    <td class="performance-low">22.56% ± 19.46%</td>
-                    <td class="best-result performance-medium">48.55% ± 0.47%</td>
-                    <td class="performance-medium">48.22% ± 0.0%</td>
-                    <td class="performance-medium">48.22% ± 0.0%</td>
-                    <td class="performance-medium">37.02% ± 15.93%</td>
-                    <td class="performance-low">27.02% ± 15.08%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 2</span></td>
-                    <td class="performance-medium">40.09% ± 5.30%</td>
-                    <td class="performance-medium">38.52% ± 14.27%</td>
-                    <td class="performance-medium">48.22% ± 0.0%</td>
-                    <td class="performance-low">28.95% ± 14.39%</td>
-                    <td class="best-result performance-medium">52.18% ± 0.87%</td>
-                    <td class="performance-medium">51.84% ± 0.53%</td>
-                    <td class="performance-medium">48.22% ± 0.0%</td>
-                    <td class="performance-medium">48.43% ± 1.16%</td>
-                    <td class="performance-medium">48.10% ± 1.58%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 3</span></td>
-                    <td class="performance-medium">47.93% ± 1.71%</td>
-                    <td class="performance-medium">48.02% ± 2.41%</td>
-                    <td class="performance-medium">48.22% ± 0.0%</td>
-                    <td class="performance-medium">40.68% ± 4.82%</td>
-                    <td class="best-result performance-medium">52.25% ± 0.81%</td>
-                    <td class="performance-medium">51.92% ± 1.13%</td>
-                    <td class="performance-medium">38.26% ± 14.09%</td>
-                    <td class="performance-medium">50.52% ± 2.15%</td>
-                    <td class="performance-medium">49.18% ± 0.26%</td>
-                </tr>
-                
-                <!-- Adult Dataset -->
-                <tr>
-                    <td rowspan="2" class="dataset-cell">Adult</td>
-                    <td><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></td>
-                    <td class="performance-high">81.73% ± 2.62%</td>
-                    <td class="performance-high">83.48% ± 2.17%</td>
-                    <td class="performance-high">76.49% ± 0.0%</td>
-                    <td class="performance-medium">69.07% ± 2.05%</td>
-                    <td class="performance-high">83.64% ± 1.71%</td>
-                    <td class="performance-high">83.31% ± 1.29%</td>
-                    <td class="performance-high">82.98% ± 0.92%</td>
-                    <td class="performance-high">82.39% ± 2.40%</td>
-                    <td class="best-result performance-high">84.39% ± 0.49%</td>
-                </tr>
-                <tr>
-                    <td><span class="math-formula">#C = 1</span></td>
-                    <td class="performance-high">80.21% ± 3.35%</td>
-                    <td class="performance-high">81.06% ± 2.98%</td>
-                    <td class="performance-high">76.49% ± 0.0%</td>
-                    <td class="performance-medium">54.08% ± 0.29%</td>
-                    <td class="best-result performance-high">85.03% ± 0.23%</td>
-                    <td class="performance-high">84.03% ± 1.48%</td>
-                    <td class="performance-high">84.70% ± 0.57%</td>
-                    <td class="performance-high">77.88% ± 4.82%</td>
-                    <td class="performance-high">79.22% ± 5.57%</td>
-                </tr>
-                
-                <!-- Summary row -->
-                <tr style="background-color: #f0f8ff; font-weight: bold;">
-                    <td colspan="3" style="text-align: center; padding: 15px;">Number of times that performs the best</td>
-                    <td style="background-color: #e1f5fe;">3</td>
-                    <td style="background-color: #e8f5e8;">4</td>
-                    <td style="background-color: #fff3e0;">2</td>
-                    <td style="background-color: #fce4ec;">1</td>
-                    <td style="background-color: #e8f5e8; font-size: 16px;">8</td>
-                    <td style="background-color: #e8f5e8;">4</td>
-                    <td style="background-color: #fff3e0;">2</td>
-                    <td style="background-color: #fff3e0;">2</td>
-                    <td style="background-color: #fce4ec;">1</td>
-                </tr>
-        
-              <!-- Section separator -->
-              <tr>
-                <td colspan="12" class="section-header"></td>
-              </tr>
-        
-               <!-- Feature distribution skew -->
-                <tr>
-                    <td rowspan="7" class="feature-skew">Feature distribution skew</td>
-                    <td class="dataset-cell">MNIST</td>
-                    <td rowspan="6"><span class="math-formula">x̂ ~ Gau(0.1)</span></td>
-                    <td class="performance-high">99.23% ± 0.07%</td>
-                    <td class="performance-high">99.26% ± 0.06%</td>
-                    <td class="performance-high">98.19% ± 0.12%</td>
-                    <td class="performance-high">99.24% ± 0.03%</td>
-                    <td class="best-result performance-high">99.28% ± 0.07%</td>
-                    <td class="performance-high">99.22% ± 0.06%</td>
-                    <td class="performance-high">99.05% ± 0.09%</td>
-                    <td class="performance-high">99.24% ± 0.02%</td>
-                    <td class="best-result performance-high">99.28% ± 0.02%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">FMNIST</td>
-                    <td class="performance-medium">84.35% ± 0.13%</td>
-                    <td class="performance-medium">84.65% ± 0.30%</td>
-                    <td class="performance-low">72.68% ± 0.44%</td>
-                    <td class="performance-medium">84.43% ± 0.03%</td>
-                    <td class="performance-medium">83.99% ± 0.25%</td>
-                    <td class="performance-medium">84.57% ± 0.26%</td>
-                    <td class="performance-medium">82.64% ± 0.51%</td>
-                    <td class="performance-medium">84.57% ± 0.12%</td>
-                    <td class="best-result performance-medium">84.72% ± 0.14%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">SVHN</td>
-                    <td class="performance-medium">68.85% ± 0.67%</td>
-                    <td class="performance-medium">69.39% ± 0.40%</td>
-                    <td class="performance-medium">70.25% ± 0.41%</td>
-                    <td class="performance-medium">69.75% ± 1.20%</td>
-                    <td class="best-result performance-medium">73.14% ± 1.03%</td>
-                    <td class="performance-medium">72.8% ± 0.56%</td>
-                    <td class="performance-medium">70.09% ± 0.92%</td>
-                    <td class="performance-medium">70.09% ± 0.73%</td>
-                    <td class="performance-medium">69.27% ± 1.75%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">CINIC10</td>
-                    <td class="best-result performance-low">35.66% ± 1.05%</td>
-                    <td class="performance-low">34.51% ± 1.01%</td>
-                    <td class="performance-low">31.97% ± 0.95%</td>
-                    <td class="performance-low">33.84% ± 0.70%</td>
-                    <td class="performance-low">23.10% ± 9.29%</td>
-                    <td class="performance-low">35.44% ± 0.73%</td>
-                    <td class="performance-low">23.44% ± 9.50%</td>
-                    <td class="performance-low">34.18% ± 0.5%</td>
-                    <td class="performance-low">33.82% ± 0.88%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">CIFAR10</td>
-                    <td class="performance-medium">64.02% ± 0.08%</td>
-                    <td class="performance-medium">63.59% ± 0.09%</td>
-                    <td class="performance-low">47.04% ± 1.01%</td>
-                    <td class="performance-medium">63.16% ± 1.13%</td>
-                    <td class="performance-medium">63.48% ± 0.88%</td>
-                    <td class="performance-medium">63.36% ± 0.42%</td>
-                    <td class="performance-medium">51.72% ± 0.75%</td>
-                    <td class="best-result performance-medium">64.93% ± 0.34%</td>
-                    <td class="performance-medium">63.8% ± 0.56%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">FedISIC2019</td>
-                    <td class="performance-medium">54.75% ± 0.56%</td>
-                    <td class="performance-medium">55.11% ± 0.12%</td>
-                    <td class="performance-low">49.56% ± 0.68%</td>
-                    <td class="performance-medium">54.78% ± 0.04%</td>
-                    <td class="performance-medium">52.36% ± 0.52%</td>
-                    <td class="performance-medium">52.7% ± 0.99%</td>
-                    <td class="performance-low">48.87% ± 0.88%</td>
-                    <td class="performance-medium">54.96% ± 0.86%</td>
-                    <td class="best-result performance-medium">55.3% ± 0.46%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">FCUBE</td>
-                    <td><span class="math-formula">synthetic</span></td>
-                    <td class="performance-high">99.57% ± 0.05%</td>
-                    <td class="performance-high">99.67% ± 0.12%</td>
-                    <td class="performance-high">97.07% ± 1.28%</td>
-                    <td class="best-result performance-high">99.87% ± 0.12%</td>
-                    <td class="performance-high">99.53% ± 0.12%</td>
-                    <td class="performance-high">99.67% ± 0.12%</td>
-                    <td class="performance-high">99.67% ± 0.12%</td>
-                    <td class="performance-high">99.7% ± 0.14%</td>
-                    <td class="performance-high">99.67% ± 0.09%</td>
-                </tr>
-        
-              <!-- Summary row -->
-              <tr>
-                <td colspan="3" style="text-align: center; font-weight: bold;">Number of times that performs the best</td>
-                  <td style="background-color: #fce4ec;">1</td>
-                    <td style="background-color: #fce4ec;">0</td>
-                      <td style="background-color: #fce4ec;">0</td>
-                        <td style="background-color: #fce4ec;">1</td>
-                        <td style="background-color: #fff3e0;">2</td> 
-                        <td style="background-color: #fce4ec;">0</td>  
-                        <td style="background-color: #fce4ec;">0</td>  
-                        <td style="background-color: #fce4ec;">1</td>
-                       <td style="background-color: #e1f5fe;">3</td>
-              </tr>
-        
-              <!-- Section separator -->
-              <tr>
-                <td colspan="12" class="section-header"></td>
-              </tr>
-        
-               <!-- Quantity Skew -->
-                <tr>
-                    <td rowspan="7" class="quantity-skew">Quantity skew</td>
-                    <td class="dataset-cell">MNIST</td>
-                    <td rowspan="7"><span class="math-formula">q ~ Dir(0.5)</span></td>
-                    <td class="performance-high">99.02% ± 0.05%</td>
-                    <td class="performance-high">99.01% ± 0.07%</td>
-                    <td class="performance-high">97.3% ± 0.02%</td>
-                    <td class="performance-high">98.95% ± 0.05%</td>
-                    <td class="best-result performance-high">99.08% ± 0.04%</td>
-                    <td class="performance-high">98.89% ± 0.05%</td>
-                    <td class="performance-high">98.61% ± 0.07%</td>
-                    <td class="performance-high">99.07% ± 0.06%</td>
-                    <td class="best-result performance-high">99.08% ± 0.06%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">FMNIST</td>
-                    <td class="performance-medium">88.80% ± 0.05%</td>
-                    <td class="performance-medium">88.46% ± 0.31%</td>
-                    <td class="performance-medium">80.53% ± 0.8%</td>
-                    <td class="performance-medium">88.99% ± 0.11%</td>
-                    <td class="performance-medium">88.95% ± 0.35%</td>
-                    <td class="performance-medium">88.75% ± 0.05%</td>
-                    <td class="performance-medium">86.41% ± 0.16%</td>
-                    <td class="best-result performance-medium">89.09% ± 0.17%</td>
-                    <td class="performance-medium">88.08% ± 0.0%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">SVHN</td>
-                    <td class="performance-medium">87.38% ± 1.27%</td>
-                    <td class="performance-medium">87.99% ± 0.38%</td>
-                    <td class="performance-medium">77.08% ± 0.97%</td>
-                    <td class="performance-medium">87.52% ± 0.44%</td>
-                    <td class="best-result performance-medium">88.80% ± 0.06%</td>
-                    <td class="performance-medium">87.44% ± 0.05%</td>
-                    <td class="performance-medium">85.08% ± 0.28%</td>
-                    <td class="performance-medium">87.85% ± 0.82%</td>
-                    <td class="performance-medium">87.94% ± 0.13%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">CINIC10</td>
-                    <td class="performance-low">38.73% ± 0.55%</td>
-                    <td class="performance-low">38.56% ± 0.39%</td>
-                    <td class="performance-low">37.61% ± 0.40%</td>
-                    <td class="performance-low">38.55% ± 0.29%</td>
-                    <td class="performance-low">26.96% ± 12.0%</td>
-                    <td class="performance-low">39.23% ± 0.48%</td>
-                    <td class="performance-low">26.63% ± 11.76%</td>
-                    <td class="performance-low">38.22% ± 0.67%</td>
-                    <td class="best-result performance-low">39.73% ± 0.45%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">CIFAR10</td>
-                    <td class="performance-medium">71.13% ± 0.37%</td>
-                    <td class="performance-medium">71.01% ± 0.39%</td>
-                    <td class="performance-low">46.14% ± 0.07%</td>
-                    <td class="best-result performance-medium">71.72% ± 0.58%</td>
-                    <td class="performance-medium">69.40% ± 0.38%</td>
-                    <td class="performance-medium">68.24% ± 0.68%</td>
-                    <td class="performance-low">25.90% ± 22.49%</td>
-                    <td class="performance-medium">71.6% ± 0.44%</td>
-                    <td class="performance-medium">71.23% ± 0.52%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">FedISIC2019</td>
-                    <td class="performance-medium">57.73% ± 0.29%</td>
-                    <td class="performance-medium">58.14% ± 0.55%</td>
-                    <td class="performance-low">49.96% ± 0.75%</td>
-                    <td class="performance-medium">57.04% ± 0.53%</td>
-                    <td class="performance-medium">56.18% ± 0.63%</td>
-                    <td class="performance-medium">56.52% ± 0.18%</td>
-                    <td class="performance-low">48.66% ± 0.63%</td>
-                    <td class="best-result performance-medium">58.51% ± 0.66%</td>
-                    <td class="performance-medium">57.93% ± 0.2%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">Adult</td>
-                    <td class="performance-medium">84.26% ± 0.04%</td>
-                    <td class="performance-medium">84.48% ± 0.23%</td>
-                    <td class="best-result performance-medium">85.55% ± 0.05%</td>
-                    <td class="performance-medium">83.98% ± 0.22%</td>
-                    <td class="performance-medium">83.83% ± 0.48%</td>
-                    <td class="performance-medium">83.5% ± 0.83%</td>
-                    <td class="performance-medium">83.83% ± 0.48%</td>
-                    <td class="performance-medium">83.6% ± 0.82%</td>
-                    <td class="performance-medium">83.93% ± 0.41%</td>
-                </tr>
-        
-              <!-- Summary row -->
-              <tr>
-                <td colspan="3" style="text-align: center; font-weight: bold;">Number of times that performs the best</td>
-                <td style="background-color: #fce4ec;">0</td>
-                <td style="background-color: #fce4ec;">0</td>
-                <td style="background-color: #fce4ec;">1</td>
-                <td style="background-color: #fce4ec;">1</td>
-                <td style="background-color: #fff3e0;">2</td>
-                <td style="background-color: #fce4ec;">0</td>
-                <td style="background-color: #fce4ec;">0</td>
-                <td style="background-color: #fff3e0;">2</td>
-               <td style="background-color: #fff3e0;">2</td>
-              </tr>
-        
-              <!-- Section separator -->
-              <tr>
-                <td colspan="12" class="section-header"></td>
-              </tr>
-        
-              <!-- Homogeneous Partition -->
-                <tr>
-                    <td rowspan="7" class="homogeneous">Homogeneous partition</td>
-                    <td class="dataset-cell">MNIST</td>
-                    <td rowspan="7"><span class="math-formula">IID</span></td>
-                    <td class="performance-high">99.11% ± 0.05%</td>
-                    <td class="performance-high">99.10% ± 0.01%</td>
-                    <td class="performance-high">98.27% ± 0.09%</td>
-                    <td class="performance-high">99.15% ± 0.04%</td>
-                    <td class="performance-high">99.11% ± 0.07%</td>
-                    <td class="performance-high">98.99% ± 0.11%</td>
-                    <td class="performance-high">98.78% ± 0.02%</td>
-                    <td class="best-result performance-high">99.19% ± 0.03%</td>
-                    <td class="performance-high">99.09% ± 0.07%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">FMNIST</td>
-                    <td class="performance-medium">89.27% ± 0.23%</td>
-                    <td class="performance-medium">89.21% ± 0.24%</td>
-                    <td class="performance-medium">83.69% ± 0.45%</td>
-                    <td class="performance-medium">89.29% ± 0.08%</td>
-                    <td class="best-result performance-medium">89.65% ± 0.03%</td>
-                    <td class="performance-medium">89.01% ± 0.11%</td>
-                    <td class="performance-medium">87.54% ± 0.57%</td>
-                    <td class="performance-medium">89.35% ± 0.16%</td>
-                    <td class="performance-medium">89.16% ± 0.36%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">SVHN</td>
-                    <td class="performance-medium">88.07% ± 0.36%</td>
-                    <td class="performance-medium">88.30% ± 0.19%</td>
-                    <td class="performance-medium">82.05% ± 0.24%</td>
-                    <td class="performance-medium">87.30% ± 1.51%</td>
-                    <td class="performance-medium">60.14% ± 28.69%</td>
-                    <td class="performance-medium">87.32% ± 0.34%</td>
-                    <td class="performance-medium">61.30% ± 29.50%</td>
-                    <td class="performance-medium">87.63% ± 1.65%</td>
-                    <td class="best-result performance-medium">88.35% ± 0.21%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">CINIC10</td>
-                    <td class="performance-low">39.99% ± 0.88%</td>
-                    <td class="performance-low">39.82% ± 0.26%</td>
-                    <td class="best-result performance-low">41.58% ± 0.48%</td>
-                    <td class="performance-low">40.18% ± 0.41%</td>
-                    <td class="performance-low">36.91% ± 1.39%</td>
-                    <td class="performance-low">40.83% ± 0.56%</td>
-                    <td class="performance-low">36.58% ± 0.93%</td>
-                    <td class="performance-low">40.85% ± 1.13%</td>
-                    <td class="performance-low">39.92% ± 0.92%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">CIFAR10</td>
-                    <td class="performance-medium">72.59% ± 0.51%</td>
-                    <td class="best-result performance-medium">74.14% ± 0.01%</td>
-                    <td class="performance-medium">51.88% ± 0.45%</td>
-                    <td class="performance-medium">72.23% ± 0.31%</td>
-                    <td class="performance-medium">69.53% ± 0.59%</td>
-                    <td class="performance-medium">68.47% ± 0.37%</td>
-                    <td class="performance-medium">65.79% ± 2.08%</td>
-                    <td class="performance-medium">69.16% ± 0.47%</td>
-                    <td class="performance-medium">72.36% ± 0.32%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">FedISIC2019</td>
-                    <td class="performance-medium">59.15% ± 0.83%</td>
-                    <td class="best-result performance-medium">60.25% ± 0.12%</td>
-                    <td class="performance-medium">52.59% ± 0.62%</td>
-                    <td class="performance-medium">58.91% ± 0.30%</td>
-                    <td class="performance-medium">51.82% ± 1.85%</td>
-                    <td class="performance-medium">51.49% ± 2.32%</td>
-                    <td class="performance-medium">51.49% ± 2.32%</td>
-                    <td class="performance-medium">59.23% ± 0.54%</td>
-                    <td class="performance-medium">58.9% ± 0.31%</td>
-                </tr>
-                <tr>
-                    <td class="dataset-cell">Adult</td>
-                    <td class="performance-medium">84.24% ± 0.39%</td>
-                    <td class="performance-medium">84.10% ± 0.16%</td>
-                    <td class="best-result performance-medium">85.59% ± 0.12%</td>
-                    <td class="performance-medium">83.97% ± 0.06%</td>
-                    <td class="performance-medium">83.9% ± 0.1%</td>
-                    <td class="performance-medium">84.23% ± 0.51%</td>
-                    <td class="performance-medium">83.90% ± 0.10%</td>
-                    <td class="performance-medium">84.42% ± 0.97%</td>
-                    <td class="performance-medium">84.09% ± 0.51%</td>
-                </tr>
-              <!-- Summary row -->
-              <tr>
-                <td colspan="3" style="text-align: center; font-weight: bold;">Number of times that performs the best</td>
-                  <td style="background-color: #fce4ec;">0</td>
-               <td style="background-color: #fff3e0;">2</td>
-                <td style="background-color: #fff3e0;">2</td>
-                <td style="background-color: #fce4ec;">0</td>
-                      <td style="background-color: #fce4ec;">1</td>
-               <td style="background-color: #fce4ec;">0</td>
-                      <td style="background-color: #fce4ec;">0</td>
-               <td style="background-color: #fce4ec;">1</td>
-                      <td style="background-color: #fce4ec;">1</td>
-              </tr>
-
-            </tbody>
-          </table>
-          <div style="margin-top: 20px; font-size: 12px; color: #666;">
-            <strong>Legend:</strong>
-            <span style="background-color: #fff3cd; padding: 2px 6px; margin: 0 10px;">Best Result</span>
-            <span style="color: #2e7d32;">■ High Performance (>80%)</span>
-            <span style="color: #f57700; margin-left: 10px;">■ Medium Performance (30-80%)</span>
-            <span style="color: #d32f2f; margin-left: 10px;">■ Low Performance (<30%)</span>
-        </div>
-          </div>     
-    </div>
-    
-  </div>
- </div> 
- <!-- Main container for all plots -->
-<div class="container is-max-desktop">
-
-   <div class="columns is-centered">
-    <div class="column is-full-width has-text-centered">
-      
-      <h2 class="title is-4" style="margin-top: 2rem; margin-bottom: 2rem;">
-        <img id="painting_icon" width="4%" src="images/icone2.png" style="vertical-align: middle;">
-        <span style="font-size: 100%; vertical-align: middle;">Training Curves: Comparative Performance</span>
-      </h2>
-
-      <!-- CIFAR-10 Training Curves -->
-      <div class="content">
-        <h3 class="title is-5">The training curves of different approaches on CIFAR-10.</h3>
-        <div class="columns is-multiline is-centered">
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cifar10_c1_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 1</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cifar10_c2_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 2</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cifar10_c3_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 3</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cifar10_pk_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cifar10_x_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">x̂ ~ Gau(0.1)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cifar10_q_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">q ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-      <hr>
-
-      <!-- CINIC10 Training Curves -->
-      <div class="content">
-        <h3 class="title is-5">The training curves of different approaches on CINIC10.</h3>
-        <div class="columns is-multiline is-centered">
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cinic10_c1_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 1</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cinic10_c2_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 2</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cinic10_c3_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 3</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cinic10_pk_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cinic10_x_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">x̂ ~ Gau(0.1)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cinic10_q_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">q ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-      <hr>
-
-      <!-- MNIST Training Curves -->
-      <div class="content">
-        <h3 class="title is-5">The training curves of different approaches on MNIST.</h3>
-        <div class="columns is-multiline is-centered">
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/mnist_c1_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 1</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/mnist_c2_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 2</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/mnist_c3_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 3</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/mnist_pk_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/mnist_x_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">x̂ ~ Gau(0.1)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/mnist_q_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">q ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-      <hr>
-
-      <!-- SVHN Training Curves -->
-      <div class="content">
-        <h3 class="title is-5">The training curves of different approaches on SVHN.</h3>
-        <div class="columns is-multiline is-centered">
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/svhn_c1_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 1</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/svhn_c2_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 2</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/svhn_c3_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 3</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/svhn_pk_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/svhn_x_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">x̂ ~ Gau(0.1)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/svhn_q_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">q ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-      <hr>
-
-      <!-- FedISIC2019 Training Curves -->
-      <div class="content">
-        <h3 class="title is-5">The training curves of different approaches on FEDISIC2019.</h3>
-        <div class="columns is-multiline is-centered">
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/fedisic2019_c1_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 1</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/fedisic2019_c2_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 2</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/fedisic2019_c3_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 3</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/fedisic2019_pk_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/fedisic2019_x_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">x̂ ~ Gau(0.1)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/fedisic2019_q_training_curve.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">q ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-
-
-  <!-- =================================== -->
-  <!-- Section for Local Epoch Sensitivity -->
-  <!-- =================================== -->
-  <div class="columns is-centered">
-    <div class="column is-full-width has-text-centered">
-      
-      <h2 class="title is-4" style="margin-top: 2rem; margin-bottom: 2rem;">
-        <img id="painting_icon" width="4%" src="images/icone3.png" style="vertical-align: middle;">
-        <span style="font-size: 100%; vertical-align: middle;">Local Epoch Sensitivity Analysis</span>
-      </h2>
-
-      <!-- FEDISIC2019 Local Epochs -->
-      <div class="content">
-        <h3 class="title is-5">The test accuracy with different number of local epochs on FEDISIC2019.</h3>
-        <div class="columns is-multiline is-centered">
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/fedisic2019_local_epochs_c1.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 1</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/fedisic2019_local_epochs_c2.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 2</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/fedisic2019_local_epochs_c3.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 3</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/fedisic2019_local_epochs_pk.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/fedisic2019_local_epochs_x.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">x̂ ~ Gau(0.1)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/fedisic2019_local_epochs_q.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">q ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-      <hr>
-
-      <!-- CIFAR-10 Local Epochs -->
-      <div class="content">
-        <h3 class="title is-5">The test accuracy with different number of local epochs on CIFAR-10.</h3>
-        <div class="columns is-multiline is-centered">
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cifar10_local_epochs_c1.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 1</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cifar10_local_epochs_c2.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 2</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cifar10_local_epochs_c3.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 3</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cifar10_local_epochs_pk.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cifar10_local_epochs_x.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">x̂ ~ Gau(0.1)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cifar10_local_epochs_q.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">q ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-      <hr>
-
-      <!-- CINIC10 Local Epochs -->
-      <div class="content">
-        <h3 class="title is-5">The test accuracy with different number of local epochs on CINIC10.</h3>
-        <div class="columns is-multiline is-centered">
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cinic10_local_epochs_c1.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 1</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cinic10_local_epochs_c2.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 2</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cinic10_local_epochs_c3.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 3</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cinic10_local_epochs_pk.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cinic10_local_epochs_x.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">x̂ ~ Gau(0.1)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/cinic10_local_epochs_q.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">q ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-      <hr>
-
-      <!-- MNIST Local Epochs -->
-      <div class="content">
-        <h3 class="title is-5">The test accuracy with different number of local epochs on MNIST.</h3>
-        <div class="columns is-multiline is-centered">
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/mnist_local_epochs_c1.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 1</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/mnist_local_epochs_c2.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 2</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/mnist_local_epochs_c3.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 3</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/mnist_local_epochs_pk.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/mnist_local_epochs_x.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">x̂ ~ Gau(0.1)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/mnist_local_epochs_q.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">q ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-      <hr>
-
-      <!-- SVHN Local Epochs -->
-      <div class="content">
-        <h3 class="title is-5">The test accuracy with different number of local epochs on SVHN.</h3>
-        <div class="columns is-multiline is-centered">
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/svhn_local_epochs_c1.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 1</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/svhn_local_epochs_c2.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 2</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/svhn_local_epochs_c3.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold">#C = 3</figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/svhn_local_epochs_pk.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">p<sub>k</sub> ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/svhn_local_epochs_x.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">x̂ ~ Gau(0.1)</span></figcaption>
-            </figure>
-          </div>
-          <div class="column is-one-third">
-            <figure>
-              <embed src="images/svhn_local_epochs_q.pdf" type="application/pdf" width="100%" height="250px" />
-              <figcaption class="is-size-7 has-text-weight-semibold"><span class="math-formula">q ~ Dir(0.5)</span></figcaption>
-            </figure>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
   </div>
 </section>
 
-
-
-
-
-  <section class="section" id="BibTeX">
-    <div class="container is-max-desktop content">
-      <h2 class="title">BibTeX</h2>
-      <pre><code>
-  @misc{,
-          author={},
-          title={}, 
-          publisher={},
-          year={},
-  }
-
-  
-  </code></pre>
+<section id="leaderboard" style="background:color-mix(in srgb,var(--card) 55%,transparent)">
+  <div class="wrap">
+    <div class="eyebrow">Leaderboard</div><h2>Average rank, with statistical context</h2>
+    <p class="lead">Rank 1 = best accuracy in a setting, averaged over settings. Choose a category to see how the picture changes with the type of heterogeneity.</p>
+    <div class="controls" id="lb-tabs"></div>
+    <div class="grid g2" style="align-items:start">
+      <div class="card"><div id="lb-rows"></div><div class="axis" id="lb-axis" style="margin-top:6px"></div><p class="small" id="lb-note" style="margin-top:12px"></p></div>
+      <div class="card"><h4>Against FedAvg, setting by setting</h4>
+        <p class="small">Paired two-sided t-tests over seeds, Holm-corrected; 47 settings (5 seeds).</p>
+        <div class="tbl-wrap" style="max-height:none"><table class="res" style="font-size:.82rem"><thead><tr><th style="text-align:left">Algorithm</th><th style="min-width:110px">better / tie / worse</th><th>w/t/l</th><th title="mean accuracy difference over settings, percentage points">mean Δ</th><th title="Wilcoxon across settings, Holm-adjusted">Wilcoxon p</th><th title="settings where the algorithm has the highest mean">best in</th></tr></thead><tbody id="wtl-rows"></tbody></table></div>
+        <p class="small" style="margin-top:10px">FedAvg-BN is excluded here: it is the control for FedBN, not a competitor.</p></div>
     </div>
-  </section>
-  
-  <!-- <section class="section" id="Acknowledgement">
-    <div class="container is-max-desktop content">
-      <h2 class="title">Acknowledgement</h2>
-      <p>
-        This website is adapted from <a
-        href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>, licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
-        Commons Attribution-ShareAlike 4.0 International License</a>.  We thank the LLaMA team for giving us access to their models, and open-source projects, including Alpaca and Vicuna.
-      </p>
+  </div>
+</section>
 
-      <p>
-<b>Usage and License Notices</b>: The data, code and checkpoint is intended and licensed for research use only. They are also restricted to uses that follow the license agreement of CLIP,  LLaMA, Vicuna and GPT-4. The dataset is CC BY NC 4.0 (allowing only non-commercial use) and models trained using the dataset should not be used outside of research purposes.
-</p>
+<section id="results">
+  <div class="wrap">
+    <div class="eyebrow">Results explorer</div><h2>All 47 settings</h2>
+    <p class="lead">Top-1 test accuracy after 50 rounds (mean ± sample SD over five seeds), hyper-parameters tuned on validation data. Hover a cell for details.</p>
+    <div class="controls"><div id="res-cats" style="display:flex;gap:8px;flex-wrap:wrap"></div><select id="res-ds"></select>
+      <label class="chk"><input type="checkbox" id="res-heat" checked> heat-map (rank within row)</label><label class="chk"><input type="checkbox" id="res-ctrl" checked> show FedAvg-BN control</label><span class="small" id="res-count"></span></div>
+    <div class="tbl-wrap"><table class="res" id="res-table"></table></div>
+    <div class="legend"><span><b>bold</b> best mean of the row</span><span><span class="up">▲</span> / <span class="dn">▼</span> significantly higher / lower than FedAvg (paired t-test, Holm, α = 0.05)</span><span>FedBN must be compared with FedAvg-BN, not with FedAvg on the plain network</span></div>
+  </div>
+</section>
 
-      <p>
-      <a href='https://github.com/Computer-Vision-in-the-Wild/'><img id="painting_icon" width="10%" src="https://avatars.githubusercontent.com/u/97258247?s=200&v=4"></a> 
-      Related Links: 
-      <a href='https://react-vl.github.io/'>[REACT]</a>  
-      <a href='https://gligen.github.io/'>[GLIGEN]</a> 
-      <a href='https://github.com/Computer-Vision-in-the-Wild/'>[Computer Vision in the Wild (CVinW)]</a> 
-      <a href='https://instruction-tuning-with-gpt-4.github.io/'>[Insutrction Tuning with GPT-4]</a>      
-      </p>    
+<section id="core" style="background:color-mix(in srgb,var(--card) 55%,transparent)">
+  <div class="wrap">
+    <div class="eyebrow">Ten seeds</div><h2>Five core settings with 95% confidence intervals</h2>
+    <p class="lead">Where the main conclusions are drawn, we use ten seeds. Overlapping intervals mean that the difference cannot be resolved.</p>
+    <div class="controls" id="core-tabs"></div>
+    <div class="card"><div id="core-plot"></div><p class="small" style="margin-top:12px"><span class="up">▲</span>/<span class="dn">▼</span> significantly better/worse than FedAvg (paired t-test, Holm-corrected).</p></div>
+  </div>
+</section>
+
+<section id="curves">
+  <div class="wrap">
+    <div class="eyebrow">Training curves</div><h2>Convergence, with confidence bands</h2>
+    <p class="lead">Mean test accuracy per communication round (shaded: 95% confidence interval over five seeds). Toggle algorithms and hover for values.</p>
+    <div class="controls"><select id="cv-ds"></select><select id="cv-tag"></select></div>
+    <div class="algochips" id="cv-algos" style="margin-bottom:14px"></div>
+    <div class="card"><div id="curve-chart"></div></div>
+  </div>
+</section>
+
+<section id="guide" style="background:color-mix(in srgb,var(--card) 55%,transparent)">
+  <div class="wrap">
+    <div class="eyebrow">Selection guide</div><h2>Which algorithm to try first?</h2>
+    <p class="lead">An uncertainty-aware guide: every recommendation is annotated with its statistical support. These are tendencies of this benchmark (10 clients, 50 rounds, 10 local epochs, small CNN/MLP), not guarantees.</p>
+    <p><b>1. What kind of heterogeneity do your clients exhibit?</b></p>
+    <div class="grid g3">
+      <div class="card scen" data-k="A"><h4>Pathological label skew</h4><p class="small" style="margin:0">each client holds only 1–2 classes</p></div>
+      <div class="card scen" data-k="B"><h4>Moderate label skew</h4><p class="small" style="margin:0">Dirichlet-type, a few classes dominate</p></div>
+      <div class="card scen" data-k="C"><h4>Feature / quantity skew, near-IID</h4><p class="small" style="margin:0">mild noise, unbalanced client sizes</p></div>
     </div>
-  </section> -->
+    <div class="card reco" id="reco"></div>
+    <div class="grid g2" style="margin-top:18px">
+      <div class="card always"><h4>In every case</h4><ul class="small" style="margin:0;padding-left:1.1rem"><li>Tune the client learning rate for each method (the selected values differ by algorithm and data family).</li><li>Report at least five seeds and paired tests; treat gaps below ≈2 points as noise.</li><li>Report communication in bytes, not only in rounds.</li></ul></div>
+      <div class="card avoid"><h4>Avoid as global-model methods in this regime</h4><ul class="small" style="margin:0;padding-left:1.1rem"><li><b>MOON</b>: never better than FedAvg (0 of 47); clearly worse for #C = 2.</li><li><b>FedBN</b>: worse than its FedAvg-BN control in 29 of 47 settings, better in none.</li></ul></div>
+    </div>
+  </div>
+</section>
 
+<section id="insights">
+  <div class="wrap">
+    <div class="eyebrow">Deep dives</div><h2>Beyond the main table</h2>
+    <div class="tabs"><div class="tab on" data-p="p-fedbn">FedBN vs control</div><div class="tab" data-p="p-bytes">Rounds vs bytes</div><div class="tab" data-p="p-epochs">Local epochs</div><div class="tab" data-p="p-noise">Strong noise</div><div class="tab" data-p="p-part">Partial participation</div></div>
 
+    <div class="panel on" id="p-fedbn"><div class="grid g2" style="align-items:start">
+      <div class="card"><h4>FedBN − FedAvg-BN (same BatchNorm network)</h4>
+        <p class="small">Mean accuracy difference in percentage points per category, and the number of settings with a significant (paired t-test, Holm) positive / no / negative difference. The last column is the cost of the BatchNorm network itself (FedAvg-BN − FedAvg).</p>
+        <div class="tbl-wrap" style="max-height:none"><table class="res"><thead><tr><th style="text-align:left">Category</th><th>#</th><th>Δ pp</th><th>better</th><th>tie</th><th>worse</th><th>BN cost pp</th></tr></thead><tbody id="fedbn-rows"></tbody></table></div></div>
+      <div class="card"><h4>Evaluating on each client's own noise level</h4>
+        <p class="small">Strong feature noise (σ = 1): FedBN client models on the clean global test set versus on data with that client's own noise level. The local statistics help on CIFAR-10 and CINIC-10, but not on FMNIST or SVHN, and FedBN stays below the best methods everywhere.</p>
+        <div class="tbl-wrap" style="max-height:none"><table class="res"><thead><tr><th style="text-align:left">Dataset</th><th>global test</th><th>own noise</th><th>Δ</th></tr></thead><tbody id="fedbn-dom"></tbody></table></div>
+        <p class="small" style="margin-top:10px">FedBN was designed for personalised use (each client evaluated on its own distribution); that use case is not what a global-model accuracy measures.</p></div>
+    </div></div>
+
+    <div class="panel" id="p-bytes"><div class="card"><h4>SCAFFOLD against FedAvg: equal rounds vs equal transmitted bytes</h4>
+      <p class="small">Number of settings (out of 47) in which SCAFFOLD has a higher mean accuracy than FedAvg. SCAFFOLD sends a control variate in each direction in addition to the model (2× the payload); at the communication budget FedAvg uses for 50 rounds, SCAFFOLD completes 25.</p>
+      <div id="bytes-bars" style="max-width:620px"></div></div></div>
+
+    <div class="panel" id="p-epochs"><div class="card"><h4>More local epochs do not pay off in general</h4>
+      <p class="small">MNIST and CIFAR-10, three seeds. From 10 to 30 epochs FedAvg loses 1.25 points on average and FedProx 3.06; only SCAFFOLD (+1.39) and the FedAvg-BN control (+0.47) improve. In every setting some algorithm peaks at 10, another at 20 and another at 30 epochs.</p>
+      <div class="controls"><select id="ep-key"></select></div><div id="ep-chart"></div></div></div>
+
+    <div class="panel" id="p-noise"><div class="card"><h4>Strong feature noise (Gaussian, σ = 1)</h4>
+      <p class="small">Test accuracy (%), five seeds. SCAFFOLD is significantly better than FedAvg on SVHN (+11.3), CINIC-10 (+9.7) and FMNIST (+1.4); FedBN is significantly worse on CIFAR-10, FMNIST and SVHN.</p>
+      <div class="tbl-wrap" style="max-height:none"><table class="res" id="noise-table"></table></div><p class="legend"><span><span class="up">▲</span>/<span class="dn">▼</span> vs FedAvg (Holm)</span></p></div></div>
+
+    <div class="panel" id="p-part"><div class="card"><h4>Partial participation (5 of 10 clients per round)</h4>
+      <p class="small">Change in test accuracy (percentage points, absolute drop) with respect to full participation, five seeds. The drop is much larger under pathological label skew. SCAFFOLD and FedAdagrad are among the most robust methods; FedAvg and FedNova are the most affected.</p>
+      <div id="part-bars"></div></div></div>
+  </div>
+</section>
+
+<section id="setup" style="background:color-mix(in srgb,var(--card) 55%,transparent)">
+  <div class="wrap">
+    <div class="eyebrow">Protocol</div><h2>How the benchmark is run</h2>
+    <div class="grid g2" style="align-items:start">
+      <div class="card"><h4>Experimental design</h4>
+        <ul class="small" style="padding-left:1.1rem">
+          <li><b>Federation:</b> 10 clients (4 for FCUBE), full participation, 50 rounds, 10 local epochs, SGD with momentum 0.9, batch 64, weight decay 1e−5.</li>
+          <li><b>Models:</b> small CNN (images) and 3-hidden-layer MLP (tabular); BatchNorm variants for FedBN and its FedAvg-BN control.</li>
+          <li><b>Tuning, equal effort:</b> validation data only (10% of the training set), seven representative settings, two tuning seeds disjoint from the evaluation seeds; the search range was extended until no winner lay on its border (1,530 runs).</li>
+          <li><b>Statistics:</b> 5 seeds (10 for five core settings); paired t-tests with Holm correction; Friedman + Nemenyi; Wilcoxon; 95% confidence intervals.</li>
+          <li><b>Evaluation:</b> final-round test accuracy; for FedBN the mean over the client models (shared weights + the client's BN state) on the same global test set.</li>
+          <li><b>Data skews:</b> label (#C = 1, 2, 3; Dirichlet 0.5), feature (Gaussian noise σ = 0.1; FCUBE), quantity (q ~ Dir(0.5)), and IID.</li>
+        </ul></div>
+      <div class="card"><h4>Selected hyper-parameters</h4>
+        <div class="tbl-wrap" style="max-height:none"><table class="res" style="font-size:.78rem"><thead><tr><th rowspan="2" style="text-align:left">Algorithm</th><th colspan="3">Image data</th><th colspan="3">Tabular data</th></tr><tr><th>lr</th><th>mom</th><th>other</th><th>lr</th><th>mom</th><th>other</th></tr></thead><tbody id="tuned-rows"></tbody></table></div></div>
+    </div>
+    <div class="card" style="margin-top:18px"><h4>Datasets</h4>
+      <div class="tbl-wrap" style="max-height:none"><table class="res"><thead><tr><th style="text-align:left">Dataset</th><th>train</th><th>test</th><th>features</th><th>classes</th></tr></thead><tbody>
+        <tr><td class="set"><a href="https://pytorch.org/vision/main/generated/torchvision.datasets.MNIST.html">MNIST</a></td><td>60,000</td><td>10,000</td><td>784</td><td>10</td></tr>
+        <tr><td class="set"><a href="https://github.com/zalandoresearch/fashion-mnist">FMNIST</a></td><td>60,000</td><td>10,000</td><td>784</td><td>10</td></tr>
+        <tr><td class="set"><a href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR-10</a></td><td>50,000</td><td>10,000</td><td>3,072</td><td>10</td></tr>
+        <tr><td class="set"><a href="https://huggingface.co/datasets/ufldl-stanford/svhn">SVHN</a></td><td>73,257</td><td>26,032</td><td>3,072</td><td>10</td></tr>
+        <tr><td class="set"><a href="https://huggingface.co/datasets/flwrlabs/cinic10">CINIC-10</a></td><td>90,000</td><td>90,000</td><td>3,072</td><td>10</td></tr>
+        <tr><td class="set"><a href="https://huggingface.co/datasets/flwrlabs/fed-isic2019">FED-ISIC2019</a></td><td>18,597</td><td>4,650</td><td>3,072</td><td>8</td></tr>
+        <tr><td class="set"><a href="https://huggingface.co/datasets/scikit-learn/adult-census-income">Adult</a></td><td>26,048</td><td>6,513</td><td>100</td><td>2</td></tr>
+        <tr><td class="set"><a href="https://huggingface.co/datasets/Nechba/fcube">FCUBE</a></td><td>4,000</td><td>1,000</td><td>3</td><td>2</td></tr></tbody></table></div></div>
+  </div>
+</section>
+
+<section id="reproduce">
+  <div class="wrap">
+    <div class="eyebrow">Reproduce</div><h2>Run it yourself</h2>
+    <p class="lead">Everything is deterministic given the seed (GPU kernels are not bitwise deterministic: about ±0.2 points between identical seeds). Runs are resumable and shardable over SLURM jobs, workstations or cloud GPUs; results are one JSON file per run.</p>
+    <pre class="code"><span class="cmt"># 1. install and test (41 unit / regression tests)</span>
+pip install -r requirements.txt
+python -m pytest tests -q
+
+<span class="cmt"># 2. download the datasets once</span>
+python -m fedbench.cli.prepare_data --datasets mnist fmnist cifar10 svhn cinic10 fedisic2019 adult fcube</pre>
+    <pre class="code"><span class="cmt"># 3. tune (validation only), select, refine until no winner is on the border of the searched range</span>
+python -m fedbench.cli.make_manifest --stage tune --num-shards 36 --out manifests/tune.jsonl
+python -m fedbench.cli.run_manifest  --manifest manifests/tune.jsonl --out results --shard 0   <span class="cmt"># one shard per worker</span>
+python -m fedbench.cli.select_hparams --results results/tune --out configs/tuned_hparams.json --table results/tuning_table.csv
+python -m fedbench.cli.make_refine --tuned configs/tuned_hparams.json --out manifests/tune_refine.jsonl
+
+<span class="cmt"># 4. final experiments and the full statistical report</span>
+python -m fedbench.cli.make_manifest --stage final --num-shards 36 --out manifests/final.jsonl
+python -m fedbench.analysis.make_report --results results --out results/report</pre>
+    <p class="small">SLURM (Narval) and single-GPU / cloud-pod launchers are in <span class="kbd">scripts/narval</span> and <span class="kbd">scripts/vm</span>; the runbook is <span class="kbd">docs/REPRODUCE.md</span>. The data behind every chart on this page is exported by <span class="kbd">fedbench.analysis.export_site_data</span>.</p>
+  </div>
+</section>
+
+<section id="cite" style="background:color-mix(in srgb,var(--card) 55%,transparent)">
+  <div class="wrap">
+    <div class="eyebrow">Cite</div><h2>BibTeX</h2>
+    <pre class="code">@misc{nechba2026flbenchmark,
+  author       = {Nechba, Mohammed and Abdulrazak, Bessam and El Afia, Abdellatif},
+  title        = {Fundamentals and Experimental Analysis of Federated Learning Algorithms:
+                  A Comparative Study on Non-IID Data Silos},
+  year         = {2026},
+  note         = {Under revision at Scientific Reports. Code: https://github.com/NechbaMohammed/FLBenchmark.
+                  Zenodo DOI: to be added at acceptance}
+}</pre>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>FLBenchmark</b> · Université de Sherbrooke × Université Mohammed V de Rabat. The data, code and results are intended for research use. Datasets keep their original licences.</p>
+    <p class="small">The legacy Flower-based implementation and the numbers of the first version of the study are kept only for backward compatibility and are not used for any result on this page.</p>
+  </div>
+</footer>
+
+<script src="static/js/data.js"></script>
+<script src="static/js/app.js"></script>
 </body>
-
 </html>
